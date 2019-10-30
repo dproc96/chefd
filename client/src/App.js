@@ -3,11 +3,12 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Toolbar from './components/Toolbar';
 import Sidebar from './components/Sidebar';
 import Content from './components/Content';
+import LogIn from './pages/LogIn';
 
 class App extends React.Component {
     state = {
         isLoggedIn: false,
-        firstName: null
+        firstName: null,
     };
     navLinks = [
         {
@@ -15,6 +16,32 @@ class App extends React.Component {
             name: "Plan your week"
         }
     ];
+    handleInputChange = event => {
+        const { name, value } = event.target;
+        this.setState({
+            [name]: value
+        })
+    }
+    handleLogIn = () => {
+        const info = {
+            email: this.state["login--email"],
+            password: this.state["login--password"]
+        }
+        if (info.email.match(/.+@.+\..+/) && info.password) {
+            //logic to be written by Dan and Giri together
+        }
+    }
+    handleSignUp = () => {
+        const info = {
+            email: this.state["signup--email"],
+            name: this.state["signup--name"],
+            password: this.state["signup--password"],
+            passwordReenter: this.state["signup--password-reenter"]
+        }
+        if (info.email.match(/.+@.+\..+/) && info.password && info.name && info.password === info.passwordReenter) {
+            //logic to be written by Dan and Giri together
+        }
+    }
     render() {
         const style = {
             display: 'grid',
@@ -28,13 +55,18 @@ class App extends React.Component {
         }
         return (
             <Router>
-                <Route exact path="/">
-                    <div style={style}>
-                        <Toolbar isLoggedIn={this.state.isLoggedIn} firstName={this.state.firstName}/>
-                        <Sidebar navLinks={this.navLinks} />
-                        <Content />
-                    </div>
-                </Route>
+                <div style={style}>
+                    <Toolbar isLoggedIn={this.state.isLoggedIn} firstName={this.state.firstName} />
+                    <Sidebar navLinks={this.navLinks} />
+                    <Content>
+                        <Route exact path="/">
+
+                        </Route>
+                        <Route exact path="/login">
+                            <LogIn handleInputChange={this.handleInputChange} handleLogIn={this.handleLogIn} />
+                        </Route>
+                    </Content>
+                </div>
             </Router>
         )
     }

@@ -9,7 +9,7 @@ class Content extends React.Component {
         }
         return (
             <div style={style}>
-                
+                {this.props.children}
             </div>
         )
     }

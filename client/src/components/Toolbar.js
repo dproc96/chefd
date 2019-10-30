@@ -6,7 +6,9 @@ class Toolbar extends React.Component {
     render() {
         const style = {
             gridArea: 'toolbar',
-            backgroundColor: theme.darkRed
+            backgroundColor: theme.darkRed,
+            zIndex: 2,
+            borderBottom: "1px #777777 solid"
         }
         return (
             <div style={style}>
