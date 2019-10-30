@@ -8,13 +8,14 @@ class Sidebar extends React.Component {
             gridArea: 'sidebar',
             backgroundColor: theme.darkBlue,
             boxShadow: "2px 2px 5px 5px rgba(0,0,0,0.3)",
-            zIndex: 1
+            zIndex: 1,
+            padding: "10px"
         }
         return (
             <div style={style}>
                 {this.props.navLinks.map(navProps => {
                     return (
-                        <NavLink {...navProps} />
+                        <NavLink active={this.props.location === navProps.path} handleLink={this.props.handleLink} {...navProps} />
                     )
                 })}
             </div>

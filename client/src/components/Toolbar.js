@@ -8,7 +8,10 @@ class Toolbar extends React.Component {
             gridArea: 'toolbar',
             backgroundColor: theme.darkRed,
             zIndex: 2,
-            borderBottom: "1px #777777 solid"
+            borderBottom: "1px #777777 solid",
+            display: "flex",
+            flexDirection: "row-reverse",
+            alignItems: "center"
         }
         return (
             <div style={style}>

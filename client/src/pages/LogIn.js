@@ -9,11 +9,11 @@ class LogIn extends React.Component {
             width: 400,
             padding: 20,
             height: "max-content",
-            backgroundColor: theme.darkBlue,
+            backgroundColor: theme.blue,
             margin: "30px 0px",
             borderRadius: "15px",
             textAlign: "center",
-            boxShadow: "2px 2px 5px 5px rgba(0,0,0,0.3)"
+            boxShadow: "2px 2px 3px 3px rgba(0,0,0,0.3)"
         }
         const style = {
             display: "flex",

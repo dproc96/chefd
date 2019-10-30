@@ -9,12 +9,21 @@ class App extends React.Component {
     state = {
         isLoggedIn: false,
         firstName: null,
+        location: window.location.pathname
     };
     navLinks = [
         {
             path: "/",
             name: "Plan your week"
-        }
+        },
+        {
+            path: "/pantry",
+            name: "Edit your pantry"
+        },
+        {
+            path: "/account",
+            name: "My Account"
+        },
     ];
     handleInputChange = event => {
         const { name, value } = event.target;
@@ -27,7 +36,7 @@ class App extends React.Component {
             email: this.state["login--email"],
             password: this.state["login--password"]
         }
-        if (info.email.match(/.+@.+\..+/) && info.password) {
+        if (info.email && info.email.match(/.+@.+\..+/) && info.password) {
             //logic to be written by Dan and Giri together
         }
     }
@@ -41,6 +50,11 @@ class App extends React.Component {
         if (info.email.match(/.+@.+\..+/) && info.password && info.name && info.password === info.passwordReenter) {
             //logic to be written by Dan and Giri together
         }
+    }
+    handleLink = path => {
+        this.setState({
+            location: path
+        })
     }
     render() {
         const style = {
@@ -56,8 +70,8 @@ class App extends React.Component {
         return (
             <Router>
                 <div style={style}>
-                    <Toolbar isLoggedIn={this.state.isLoggedIn} firstName={this.state.firstName} />
-                    <Sidebar navLinks={this.navLinks} />
+                    <Toolbar handleLink={this.handleLink} isLoggedIn={this.state.isLoggedIn} firstName={this.state.firstName} />
+                    <Sidebar handleLink={this.handleLink} location={this.state.location} navLinks={this.navLinks} />
                     <Content>
                         <Route exact path="/">
 
