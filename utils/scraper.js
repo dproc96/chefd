@@ -1,10 +1,12 @@
 const cheerio = require('cheerio');
 const axios = require('axios');
+const db = require('../models');
 
 const alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
 
 module.exports = {
     scrapeSeriousEats: async function () {
+        console.log("Beginning scraping from Serious Eats...")
         let recipes = [];
         for (let i = 1; i < 101; i++) {
             await axios.get(`https://www.seriouseats.com/recipes/topics/meal/mains?page=${i}`).then(results => {
@@ -30,7 +32,12 @@ module.exports = {
                 recipe.ingredients = ingredients;
             })
         };
-        console.log(recipes)
+        db.RecipeExternal.create(recipes, (error, data) => {
+            if (error) {
+                console.log(error);
+            }
+            console.log(data);
+        })
     }
 }
 
