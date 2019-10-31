@@ -4,6 +4,8 @@ import Toolbar from './components/Toolbar';
 import Sidebar from './components/Sidebar';
 import Content from './components/Content';
 import LogIn from './pages/LogIn';
+import RecipePreviewCard from './components/RecipeCardList';
+import ReactModal from './components/ReactModal'
 
 class App extends React.Component {
     state = {
@@ -78,6 +80,9 @@ class App extends React.Component {
                         </Route>
                         <Route exact path="/login">
                             <LogIn handleInputChange={this.handleInputChange} handleLogIn={this.handleLogIn} />
+                           <RecipePreviewCard/>
+                           <ReactModal/>
+        
                         </Route>
                     </Content>
                 </div>
