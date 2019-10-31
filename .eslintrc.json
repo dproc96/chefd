@@ -5,6 +5,12 @@
         "node": true,
         "es6": true
     },
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
     "rules": {
         "no-duplicate-case":"error",
         "no-empty":"error",
@@ -17,7 +23,7 @@
         "eqeqeq": "error",
         "no-empty-function": "error",
         "no-multi-spaces": "error",
-        "no-unused-vars": "error",
+        "no-unused-vars": "warn",
         "no-var": "warn",
         "camelcase": "error",
         "indent": [
