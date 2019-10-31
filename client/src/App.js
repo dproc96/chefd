@@ -47,7 +47,7 @@ class App extends React.Component {
             password: this.state["signup--password"],
             passwordReenter: this.state["signup--password-reenter"]
         }
-        if (info.email.match(/.+@.+\..+/) && info.password && info.name && info.password === info.passwordReenter) {
+        if (info.email && info.email.match(/.+@.+\..+/) && info.password && info.name && info.password === info.passwordReenter) {
             //logic to be written by Dan and Giri together
         }
     }
