@@ -11,7 +11,7 @@ app.use(express.json());
 
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/chefd";
 
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 require("./routes/apiRoutes")(app);
 
@@ -24,7 +24,7 @@ app.get("*", (req, res) => {
 
 
 app.listen(PORT, () => {
-  // db.RecipeExternal.deleteMany({});
+  // db.RecipeExternal.drop();
   
   // require("./utils/scraper").scrapeSeriousEats();
   console.log(`🌎 ==> API server now on port ${PORT}!`);

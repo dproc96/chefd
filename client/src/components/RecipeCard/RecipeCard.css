@@ -1,19 +1,21 @@
 .RecipeCard{
-  width:400px;
-  height:430px;
-  padding:10px;
-  margin:1rem;
+  width: 200px;
+  padding: 10px;
+  margin: 20px 10px;
   box-shadow:7px 10px 12px -5px rgba(0,0,0,0.56);
-  background-color:white;
   border-radius: 5px;
-  text-align: center
-
-
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .RecipeCard>img{
-   width:350px;
-   height:300px;
+   width: 100%;
+   height: 150px;
+   object-fit: cover;
+   object-position: center;
    transition: all ease 500ms
 
 }

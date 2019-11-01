@@ -4,15 +4,19 @@ import Toolbar from './components/Toolbar';
 import Sidebar from './components/Sidebar';
 import Content from './components/Content';
 import LogIn from './pages/LogIn';
-import RecipePreviewCard from './components/RecipeCardList';
-import ReactModal from './components/ReactModal'
+import MealPlan from './pages/MealPlan';
+import axios from 'axios';
 
 class App extends React.Component {
-    state = {
-        isLoggedIn: false,
-        firstName: null,
-        location: window.location.pathname
-    };
+    constructor() {
+        super();
+        this.state = {
+            isLoggedIn: false,
+            firstName: null,
+            location: window.location.pathname
+        };
+        this.getSevenMeals();
+    }
     navLinks = [
         {
             path: "/",
@@ -27,6 +31,13 @@ class App extends React.Component {
             name: "My Account"
         },
     ];
+    getSevenMeals = () => {
+        axios.get(window.location.origin+ "/api/recipes/week").then(results => {
+            this.setState({recipes: results.data});
+        }).catch(error => {
+            console.log(error);
+        })
+    }
     handleInputChange = event => {
         const { name, value } = event.target;
         this.setState({
@@ -76,13 +87,10 @@ class App extends React.Component {
                     <Sidebar handleLink={this.handleLink} location={this.state.location} navLinks={this.navLinks} />
                     <Content>
                         <Route exact path="/">
-
+                            <MealPlan recipes={this.state.recipes} />
                         </Route>
                         <Route exact path="/login">
-                            <LogIn handleInputChange={this.handleInputChange} handleLogIn={this.handleLogIn} />
-                           <RecipePreviewCard/>
-                           <ReactModal/>
-        
+                            <LogIn handleInputChange={this.handleInputChange} handleLogIn={this.handleLogIn} />   
                         </Route>
                     </Content>
                 </div>
