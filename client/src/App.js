@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Toolbar from './components/Toolbar';
 import Sidebar from './components/Sidebar';
 import Content from './components/Content';
+import Footer from './components/Footer';
 import LogIn from './pages/LogIn';
 import MealPlan from './pages/MealPlan';
 import axios from 'axios';
@@ -32,7 +33,7 @@ class App extends React.Component {
         },
     ];
     getSevenMeals = () => {
-        axios.get(window.location.origin+ "/api/recipes/week").then(results => {
+        axios.get(window.location.origin + "/api/recipes/week").then(results => {
             this.setState({recipes: results.data});
         }).catch(error => {
             console.log(error);
@@ -72,11 +73,12 @@ class App extends React.Component {
     render() {
         const style = {
             display: 'grid',
-            gridTemplateRows: '50px 1fr',
+            gridTemplateRows: '50px 1fr 60px',
             gridTemplateColumns: '300px 1fr',
             gridTemplateAreas: `
                 'toolbar toolbar'
                 'sidebar content'
+                'footer footer'
             `,
             minHeight: '100vh'
         }
@@ -93,6 +95,7 @@ class App extends React.Component {
                             <LogIn handleInputChange={this.handleInputChange} handleLogIn={this.handleLogIn} />   
                         </Route>
                     </Content>
+                    <Footer />
                 </div>
             </Router>
         )
