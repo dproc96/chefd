@@ -1,0 +1,2 @@
+.RecipeCard{width:200px;padding:10px;margin:20px 10px;box-shadow:7px 10px 12px -5px rgba(0,0,0,.56);border-radius:5px;text-align:center;display:flex;flex-direction:column;justify-content:space-between;align-items:center}.RecipeCard>img{width:100%;height:150px;object-fit:cover;object-position:center;-webkit-transition:all .5s ease;transition:all .5s ease}.RecipeCard>img:hover{-webkit-transform:scale(1.04);transform:scale(1.04);opacity:.8}.RecipeCardList{display:flex;justify-content:space-evenly;flex-wrap:wrap}
+/*# sourceMappingURL=main.a5756f3a.chunk.css.map */
