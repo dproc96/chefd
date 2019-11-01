@@ -5,7 +5,7 @@ class MealPlan extends React.Component {
   render() {
     return (
       <div>
-        <RecipeCardList />
+        <RecipeCardList {...this.props} />
       </div>
     )
   }
