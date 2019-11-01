@@ -20,4 +20,14 @@ module.exports = app => {
       response.json(recipes);
     });
   });
+
+  app.get("/api/recipes/one", (request, response) => {
+    db.RecipeExternal.find({}, (error, data) => {
+      if (error) {
+        response.status(503).end();
+      }
+      let recipes = Algorithm.selectRecipe(data);
+      response.json(recipes);
+    });
+  });
 };
