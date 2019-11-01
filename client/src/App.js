@@ -45,6 +45,16 @@ class App extends React.Component {
             [name]: value
         })
     }
+    handleReshuffle = event => {
+        const index = event.target.value;
+        const recipes = [...this.state.recipes];
+        axios.get(window.location.origin + "/api/recipes/one").then(results => {
+            recipes[index] = results.data;
+            this.setState({recipes: recipes})
+        }).catch(error => {
+            console.log(error)
+        })
+    }
     handleLogIn = () => {
         const info = {
             email: this.state["login--email"],
@@ -89,7 +99,7 @@ class App extends React.Component {
                     <Sidebar handleLink={this.handleLink} location={this.state.location} navLinks={this.navLinks} />
                     <Content>
                         <Route exact path="/">
-                            <MealPlan recipes={this.state.recipes} />
+                            <MealPlan handleReshuffle={this.handleReshuffle} recipes={this.state.recipes} />
                         </Route>
                         <Route exact path="/login">
                             <LogIn handleInputChange={this.handleInputChange} handleLogIn={this.handleLogIn} />   

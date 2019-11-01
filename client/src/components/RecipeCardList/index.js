@@ -7,8 +7,8 @@ class RecipeCardList extends Component{
   render(){
     return(
       <div className="RecipeCardList">
-        {this.props.recipes && this.props.recipes.map(recipe => {
-          return <RecipeCard name={recipe.title} key={recipe.url} url={recipe.url} imageSrc={recipe.image} ingredients={recipe.ingredients} />;
+        {this.props.recipes && this.props.recipes.map((recipe, i) => {
+          return <RecipeCard handleReshuffle={this.props.handleReshuffle} value={i} name={recipe.title} key={i} url={recipe.url} imageSrc={recipe.image} ingredients={recipe.ingredients} />;
         })}
       </div>
     );

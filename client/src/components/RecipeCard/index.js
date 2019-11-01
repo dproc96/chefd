@@ -16,8 +16,9 @@ class RecipeCard extends Component {
         </div>
         <div>
           <button>Read More</button>
-          <button>Reshuffle</button>
+          <button onClick={this.props.handleReshuffle} value={this.props.value}>Reshuffle</button>
           <button>Choose Yourself!</button>
+          <button>Block Off Day</button>
         </div>
       </div>
     )
