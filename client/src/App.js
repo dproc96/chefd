@@ -34,7 +34,7 @@ class App extends React.Component {
     ];
     getSevenMeals = () => {
         axios.get(window.location.origin + "/api/recipes/week").then(results => {
-            this.setState({recipes: results.data});
+            this.setState({ recipes: results.data });
         }).catch(error => {
             console.log(error);
         })
@@ -50,9 +50,49 @@ class App extends React.Component {
         const recipes = [...this.state.recipes];
         axios.get(window.location.origin + "/api/recipes/one").then(results => {
             recipes[index] = results.data;
-            this.setState({recipes: recipes})
+            this.setState({ recipes: recipes })
         }).catch(error => {
             console.log(error)
+        })
+    }
+    handleBlockDay = event => {
+        const index = event.target.value;
+        const recipes = [...this.state.recipes];
+        recipes[index] = null;
+        this.setState({ recipes: recipes });
+    }
+    handleDragCardStart = event => {
+        console.log(event.target.id);
+        this.setState({
+            dragging: event.target.id,
+            draggedOver: event.target.id
+        });
+    }
+    handleDragOver = event => {
+        if (this.state.dragging) {
+            if (event.target.id) {
+                console.log(event.target.id)
+                this.setState({ draggedOver: event.target.id })
+            }
+            else {
+                this.setState({ draggedOver: this.state.dragging })
+            }
+            const recipes = [...this.state.recipes];
+            const dragging = this.state.dragging;
+            const draggedOver = this.state.draggedOver;
+            const temp = recipes[dragging];
+            recipes[dragging] = recipes[draggedOver];
+            recipes[draggedOver] = temp;
+            this.setState({
+                recipes: recipes,
+                dragging: draggedOver
+            })
+        }
+    }
+    handleDragEnd = event => {
+        this.setState({
+            dragging: null,
+            draggedOver: null
         })
     }
     handleLogIn = () => {
@@ -99,10 +139,10 @@ class App extends React.Component {
                     <Sidebar handleLink={this.handleLink} location={this.state.location} navLinks={this.navLinks} />
                     <Content>
                         <Route exact path="/">
-                            <MealPlan handleReshuffle={this.handleReshuffle} recipes={this.state.recipes} />
+                            <MealPlan handleDragEnd={this.handleDragEnd} handleDragOver={this.handleDragOver} handleDragCardStart={this.handleDragCardStart} handleBlockDay={this.handleBlockDay} handleReshuffle={this.handleReshuffle} recipes={this.state.recipes} />
                         </Route>
                         <Route exact path="/login">
-                            <LogIn handleInputChange={this.handleInputChange} handleLogIn={this.handleLogIn} />   
+                            <LogIn handleInputChange={this.handleInputChange} handleLogIn={this.handleLogIn} />
                         </Route>
                     </Content>
                     <Footer />

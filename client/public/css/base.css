@@ -47,6 +47,10 @@ button {
     width: 40%;
 }
 
+button:focus {
+    outline: none;
+}
+
 button:hover {
     background-color: #B3191B;
     cursor: pointer;

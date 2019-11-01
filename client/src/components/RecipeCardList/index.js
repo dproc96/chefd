@@ -5,10 +5,11 @@ import "./RecipeCardList.css";
 
 class RecipeCardList extends Component{
   render(){
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     return(
       <div className="RecipeCardList">
         {this.props.recipes && this.props.recipes.map((recipe, i) => {
-          return <RecipeCard handleReshuffle={this.props.handleReshuffle} value={i} name={recipe.title} key={i} url={recipe.url} imageSrc={recipe.image} ingredients={recipe.ingredients} />;
+          return <RecipeCard handleDragEnd={this.props.handleDragEnd} handleDragOver={this.props.handleDragOver} handleDragCardStart={this.props.handleDragCardStart} day={days[i]} handleBlockDay={this.props.handleBlockDay} handleReshuffle={this.props.handleReshuffle} value={i} recipe={recipe} key={i} />;
         })}
       </div>
     );
