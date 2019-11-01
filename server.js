@@ -26,6 +26,6 @@ app.get("*", (req, res) => {
 app.listen(PORT, () => {
   // db.RecipeExternal.drop();
   
-  require("./utils/scraper").scrapeSeriousEats();
+  // require("./utils/scraper").scrapeSeriousEats();
   console.log(`🌎 ==> API server now on port ${PORT}!`);
 });

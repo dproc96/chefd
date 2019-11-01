@@ -132,17 +132,41 @@ class App extends React.Component {
             `,
             minHeight: '100vh'
         }
+        const props = {
+            toolbar: {
+                handleLink: this.handleLink,
+                isLoggedIn: this.state.isLoggedIn,
+                firstName: this.state.firstName
+            },
+            sidebar: {
+                handleLink: this.handleLink,
+                location: this.state.location,
+                navLinks: this.navLinks
+            },
+            mealPlan: {
+                handleDragCardStart: this.handleDragCardStart,
+                handleDragOver: this.handleDragOver,
+                handleDragEnd: this.handleDragEnd,
+                handleBlockDay: this.handleBlockDay,
+                handleReshuffle: this.handleReshuffle,
+                recipes: this.state.recipes
+            },
+            logIn: {
+                handleInputChange: this.handleInputChange,
+                handleLogIn: this.handleLogIn
+            }
+        }
         return (
             <Router>
                 <div style={style}>
-                    <Toolbar handleLink={this.handleLink} isLoggedIn={this.state.isLoggedIn} firstName={this.state.firstName} />
-                    <Sidebar handleLink={this.handleLink} location={this.state.location} navLinks={this.navLinks} />
+                    <Toolbar {...props.toolbar} />
+                    <Sidebar {...props.sidebar} />
                     <Content>
                         <Route exact path="/">
-                            <MealPlan handleDragEnd={this.handleDragEnd} handleDragOver={this.handleDragOver} handleDragCardStart={this.handleDragCardStart} handleBlockDay={this.handleBlockDay} handleReshuffle={this.handleReshuffle} recipes={this.state.recipes} />
+                            <MealPlan {...props.mealPlan} />
                         </Route>
                         <Route exact path="/login">
-                            <LogIn handleInputChange={this.handleInputChange} handleLogIn={this.handleLogIn} />
+                            <LogIn {...props.logIn} />
                         </Route>
                     </Content>
                     <Footer />

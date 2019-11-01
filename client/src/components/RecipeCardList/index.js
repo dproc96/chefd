@@ -9,7 +9,16 @@ class RecipeCardList extends Component{
     return(
       <div className="RecipeCardList">
         {this.props.recipes && this.props.recipes.map((recipe, i) => {
-          return <RecipeCard handleDragEnd={this.props.handleDragEnd} handleDragOver={this.props.handleDragOver} handleDragCardStart={this.props.handleDragCardStart} day={days[i]} handleBlockDay={this.props.handleBlockDay} handleReshuffle={this.props.handleReshuffle} value={i} recipe={recipe} key={i} />;
+          const props = {
+            handleDragEnd: this.props.handleDragEnd,
+            handleDragOver: this.props.handleDragOver,
+            handleDragCardStart: this.props.handleDragCardStart,
+            handleBlockDay: this.props.handleBlockDay,
+            handleReshuffle: this.props.handleReshuffle,
+            day: days[i],
+            recipe: recipe
+          };
+          return <RecipeCard {...props} value={i} key={i} />;
         })}
       </div>
     );
