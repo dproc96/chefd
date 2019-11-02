@@ -25,6 +25,7 @@
     "eslint-plugin-import": "^2.18.2",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
+    "if-env": "^1.0.4",
     "ingredientparser": "0.0.3",
     "mongoose": "^5.7.7",
     "react-modal": "^3.11.1",
