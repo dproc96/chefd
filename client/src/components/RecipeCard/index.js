@@ -27,10 +27,10 @@ class RecipeCard extends Component {
           <h4>{this.props.day} -- You have blocked off this day</h4>
           <button onClick={this.props.handleReshuffle} value={this.props.value}>Unblock</button>
         </div>
-    )
+    );
   }
 
 }
 
 
-export default RecipeCard
+export default RecipeCard;
