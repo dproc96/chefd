@@ -32,7 +32,7 @@ module.exports = app => {
     });
   });
 
-  app.put("api/recipes/scrape", (request, response) => {
+  app.put("/api/recipes/scrape", (request, response) => {
     db.RecipeExternal.deleteMany({}, error => {
       if (error) {
         console.log(error);
