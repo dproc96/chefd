@@ -15,6 +15,7 @@ class RecipeCardList extends Component{
             handleDragCardStart: this.props.handleDragCardStart,
             handleBlockDay: this.props.handleBlockDay,
             handleReshuffle: this.props.handleReshuffle,
+            handleSearchRecipes: this.props.handleSearchRecipes,
             day: days[i],
             recipe: recipe
           };

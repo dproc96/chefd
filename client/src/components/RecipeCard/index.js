@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './RecipeCard.css';
 import theme from '../../theme';
+import {Link} from 'react-router-dom'
 
 class RecipeCard extends Component {
   render() {
@@ -18,7 +19,9 @@ class RecipeCard extends Component {
           <div>
             <a target="_blank" rel="noopener noreferrer" href={this.props.recipe.url}><button>Read More</button></a>
             <button onClick={this.props.handleReshuffle} value={this.props.value}>Reshuffle</button>
-            <button>Choose Yourself!</button>
+            <Link to ="searchrecipes">
+              <button onClick={() => this.props.handleSearchRecipes(this.props.value)}>Choose Yourself!</button>
+            </Link>
             <button onClick={this.props.handleBlockDay} value={this.props.value}>Block Off Day</button>
           </div>
         </div>
