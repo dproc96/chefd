@@ -15,18 +15,22 @@
   "author": "Dan Proctor, Giridhar Rao, Rizwan Renesa",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^4.1.0",
+    "concurrently": "^4.1.2",
     "nodemon": "^1.18.7"
   },
   "dependencies": {
     "axios": "^0.19.0",
+    "bcrypt": "^3.0.6",
+    "bcryptjs": "^2.4.3",
     "cheerio": "^1.0.0-rc.3",
+    "config": "^3.2.4",
     "eslint": "^6.6.0",
     "eslint-plugin-import": "^2.18.2",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "if-env": "^1.0.4",
     "ingredientparser": "0.0.3",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.7",
     "react-modal": "^3.11.1",
     "react-router-dom": "^5.1.2",

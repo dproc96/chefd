@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const bcrypt = require('bcryptjs');
 const PORT = process.env.PORT || 3001;
 const app = express();
 const mongoose = require("mongoose");
@@ -14,6 +15,7 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/chefd";
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 require("./routes/apiRoutes")(app);
+require("./routes/authRoutes")(app);
 
 const root = path.join(__dirname, "client", "build");
 app.use(express.static(root));
