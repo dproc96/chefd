@@ -13,9 +13,9 @@ class Sidebar extends React.Component {
     };
     return (
       <div style={style}>
-        {this.props.navLinks.map(navProps => {
+        {this.props.navLinks.map((navProps, i) => {
           return (
-            <NavLink active={this.props.location === navProps.path} handleLink={this.props.handleLink} {...navProps} />
+            <NavLink key={i} active={this.props.location === navProps.path} handleLink={this.props.handleLink} {...navProps} />
           );
         })}
       </div>

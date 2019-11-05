@@ -1,12 +1,12 @@
-import React from 'react';
-import GroceryCheckbox from './GroceryCheckbox';
+import React from "react";
+import GroceryCheckbox from "./GroceryCheckbox";
 
 class GroceryList extends React.Component {
   render() {
     const style = {
       lineHeight: 1.3,
       textAlign: "left"
-    }
+    };
     const groceryList = [];
     for (let ingredient in this.props.groceryList) {
       let string = `${this.props.groceryList[ingredient].name}${this.props.groceryList[ingredient].amounts[0] ? ` (${this.props.groceryList[ingredient].amounts.join(", ")})` : ""}`;
@@ -14,8 +14,8 @@ class GroceryList extends React.Component {
       groceryList.push(
         <div key={ingredient}>
           <li value={string}>
-            <GroceryCheckbox />
-            <input onChange={this.props.handleGroceryChange} name={ingredient} type="text" style={{display: "inline-block"}} value={string} />
+            <GroceryCheckbox handleCheckbox={this.props.handleCheckbox} ingredient={ingredient} checked={this.props.groceryList[ingredient].checked} />
+            <input onChange={this.props.handleGroceryChange} name={ingredient} type="text" style={{ display: "inline-block", textDecoration: this.props.groceryList[ingredient].checked ? "line-through" : "none"}} value={string} />
           </li>
         </div>
       );
@@ -36,7 +36,7 @@ class GroceryList extends React.Component {
           {groceryList}
         </ul>
       </div>
-    )
+    );
   }
 }
 

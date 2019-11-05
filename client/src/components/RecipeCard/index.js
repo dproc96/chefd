@@ -5,7 +5,7 @@ import theme from '../../theme';
 class RecipeCard extends Component {
   render() {
     const style = {
-      backgroundColor: theme.blue,
+      backgroundColor: theme.blueTranslucent,
     };
     return (   
       this.props.recipe ?
