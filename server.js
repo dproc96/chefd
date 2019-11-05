@@ -15,7 +15,7 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/chefd";
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 require("./routes/apiRoutes")(app);
-require("./routes/authRoutes")(app);
+app.use(require("./routes/authRoutes"));
 
 const root = path.join(__dirname, "client", "build");
 app.use(express.static(root));
