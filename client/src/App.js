@@ -6,7 +6,12 @@ import Content from './components/Content';
 import Footer from './components/Footer';
 import LogIn from './pages/LogIn';
 import MealPlan from './pages/MealPlan';
+import GroceryList from './components/GroceryList';
 import axios from 'axios';
+import Modal from 'react-modal';
+import theme from './theme';
+
+Modal.setAppElement('#root')
 
 class App extends React.Component {
     constructor() {
@@ -14,7 +19,8 @@ class App extends React.Component {
         this.state = {
             isLoggedIn: false,
             firstName: null,
-            location: window.location.pathname
+            location: window.location.pathname,
+            isGroceryListOpen: false
         };
         this.getSevenMeals();
     }
@@ -32,6 +38,9 @@ class App extends React.Component {
             name: "My Account"
         },
     ];
+    closeGroceryList = () => {
+        this.setState({isGroceryListOpen: false})
+    }
     getSevenMeals = () => {
         axios.get(window.location.origin + "/api/recipes/week").then(results => {
             this.setState({ recipes: results.data });
@@ -39,18 +48,69 @@ class App extends React.Component {
             console.log(error);
         })
     }
+    generateGroceryList = () => {
+        if (this.state.groceryList) {
+            this.setState({
+                isGroceryListOpen: true,
+            });
+        }
+        else {
+            const recipes = this.state.recipes;
+            const groceryList = {};
+            for (let recipe of recipes) {
+                if (recipe) {
+                    for (let ingredient of recipe.ingredients) {
+                        if (ingredient.ingredient) {
+                            if (groceryList.hasOwnProperty(ingredient.ingredient)) {
+                                groceryList[ingredient.ingredient].amounts.push(`${ingredient.quantity && ingredient.quantity} ${ingredient.unit && ingredient.unit}`);
+                            }
+                            else {
+                                groceryList[ingredient.ingredient] = {
+                                    name: ingredient.ingredient,
+                                    amounts: [`${ingredient.quantity ? ingredient.quantity : ""}${ingredient.quantity && ingredient.unit ? " " : ""}${ingredient.unit ? ingredient.unit : ""}`],
+                                    checked: false
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            this.setState({
+                isGroceryListOpen: true,
+                groceryList: groceryList
+            });
+        }
+    }
+    handleCheckbox = event => {
+        const groceryList = this.state.groceryList;
+        const ingredient = event.target.id;
+        groceryList[ingredient].checked = !groceryList[ingredient].checked;
+        this.setState({groceryList: groceryList});
+    }
     handleInputChange = event => {
         const { name, value } = event.target;
         this.setState({
             [name]: value
         })
     }
+    handleGroceryChange = event => {
+        const { name, value } = event.target;
+        const groceryList = {...this.state.groceryList};
+        groceryList[name].name = value;
+        groceryList[name].amounts = [""];
+        this.setState({
+            groceryList: groceryList
+        });
+    }
     handleReshuffle = event => {
         const index = event.target.value;
         const recipes = [...this.state.recipes];
         axios.get(window.location.origin + "/api/recipes/one").then(results => {
             recipes[index] = results.data;
-            this.setState({ recipes: recipes })
+            this.setState({ 
+                recipes: recipes,
+                groceryList: null
+            })
         }).catch(error => {
             console.log(error)
         })
@@ -59,10 +119,12 @@ class App extends React.Component {
         const index = event.target.value;
         const recipes = [...this.state.recipes];
         recipes[index] = null;
-        this.setState({ recipes: recipes });
+        this.setState({ 
+            recipes: recipes,
+            groceryList: null
+        });
     }
     handleDragCardStart = event => {
-        console.log(event.target.id);
         this.setState({
             dragging: event.target.id,
             draggedOver: event.target.id
@@ -71,7 +133,6 @@ class App extends React.Component {
     handleDragOver = event => {
         if (this.state.dragging) {
             if (event.target.id) {
-                console.log(event.target.id)
                 this.setState({ draggedOver: event.target.id })
             }
             else {
@@ -132,6 +193,19 @@ class App extends React.Component {
             `,
             minHeight: '100vh'
         }
+        const modalStyle = {
+            content: {
+                width: "300px",
+                maxWidth: "80%",
+                left: "50%",
+                marginLeft: "-100px",
+                backgroundColor: theme.blue,
+                textAlign: "center"
+            },
+            overlay: {
+                zIndex: 4,
+            }
+        }
         const props = {
             toolbar: {
                 handleLink: this.handleLink,
@@ -149,11 +223,18 @@ class App extends React.Component {
                 handleDragEnd: this.handleDragEnd,
                 handleBlockDay: this.handleBlockDay,
                 handleReshuffle: this.handleReshuffle,
-                recipes: this.state.recipes
+                generateGroceryList: this.generateGroceryList,
+                recipes: this.state.recipes,
+                groceryList: this.state.groceryList
             },
             logIn: {
                 handleInputChange: this.handleInputChange,
                 handleLogIn: this.handleLogIn
+            },
+            groceryList: {
+                groceryList: this.state.groceryList,
+                handleGroceryChange: this.handleGroceryChange,
+                handleCheckbox: this.handleCheckbox
             }
         }
         return (
@@ -171,6 +252,10 @@ class App extends React.Component {
                     </Content>
                     <Footer />
                 </div>
+                <Modal style={modalStyle} isOpen={this.state.isGroceryListOpen}>
+                    <GroceryList {...props.groceryList} />
+                    <button onClick={this.closeGroceryList}>Close List</button>
+                </Modal>
             </Router>
         )
     }

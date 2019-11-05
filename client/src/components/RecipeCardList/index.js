@@ -20,6 +20,7 @@ class RecipeCardList extends Component{
           };
           return <RecipeCard {...props} value={i} key={i} />;
         })}
+        <button onClick={this.props.generateGroceryList}>Generate Grocery List</button>
       </div>
     );
   }
