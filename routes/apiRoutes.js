@@ -1,6 +1,7 @@
 const db = require("../models");
 const Algorithm = require("../utils/algorithm");
 const Scraper = require("../utils/scraper");
+const auth = require('../middleware/auth')
 
 module.exports = app => {
   app.get("/api/recipes/external", (request, response) => {
@@ -42,4 +43,27 @@ module.exports = app => {
       response.json({message: "Starting scrape"});
     });
   });
+
+  app.post("/api/account/favouriterecipes", auth, async(req,res)=>{
+    //create the association of the Useraccount with the user from auth
+    const userAccount = new db.UserAccount({
+      ...req.body,
+      owner:req.user._id
+    })
+    try {
+      await userAccount.save()
+      res.status(201).send(userAccount)
+    } catch (e) {
+      res.status(400).send(e)
+    }
+  })
+
+  app.post("/api/account/pantry", (req, res) => {
+
+
+  })
+
+
+
 };
+

@@ -8,6 +8,7 @@ import LogIn from './pages/LogIn';
 import MealPlan from './pages/MealPlan';
 import GroceryList from './components/GroceryList';
 import axios from 'axios';
+import SearchRecipes from './pages/SearchRecipes';
 import Modal from 'react-modal';
 import theme from './theme';
 
@@ -181,6 +182,17 @@ class App extends React.Component {
             location: path
         })
     }
+
+
+    handleSearchRecipes=(value)=>{
+        const index = value
+        console.log(index)
+        const recipes = [...this.state.recipes];
+        recipes[index] = null;
+        this.setState({ recipes: recipes });
+        
+
+    }
     render() {
         const style = {
             display: 'grid',
@@ -223,6 +235,7 @@ class App extends React.Component {
                 handleDragEnd: this.handleDragEnd,
                 handleBlockDay: this.handleBlockDay,
                 handleReshuffle: this.handleReshuffle,
+                handleSearchRecipes: this.handleSearchRecipes,
                 generateGroceryList: this.generateGroceryList,
                 recipes: this.state.recipes,
                 groceryList: this.state.groceryList
@@ -248,6 +261,9 @@ class App extends React.Component {
                         </Route>
                         <Route exact path="/login">
                             <LogIn {...props.logIn} />
+                        </Route>
+                        <Route exact path="/searchrecipes">
+                        <SearchRecipes/>
                         </Route>
                     </Content>
                     <Footer />
