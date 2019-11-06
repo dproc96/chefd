@@ -6,7 +6,7 @@ class LogInCard extends React.Component {
       <div style={this.props.cardStyle}>
         <h2>Log In</h2>
         <input onChange={this.props.handleInputChange} name="login--email" placeholder="Email Address..." />
-        <input onChange={this.props.handleInputChange} name="login--password" placeholder="Password..." />
+        <input onChange={this.props.handleInputChange} type="password" name="login--password" placeholder="Password..." />
         <button onClick={this.props.handleLogIn}>Submit</button>
       </div>
     );

@@ -19,7 +19,7 @@ class App extends React.Component {
         super();
         this.state = {
             isLoggedIn: false,
-            firstName: null,
+            name: null,
             location: window.location.pathname,
             isGroceryListOpen: false
         };
@@ -38,6 +38,10 @@ class App extends React.Component {
             path: "/account",
             name: "My Account"
         },
+        {
+            path: "/favorites",
+            name: "My Favorites"
+        }
     ];
     closeGroceryList = () => {
         this.setState({isGroceryListOpen: false})
@@ -163,8 +167,28 @@ class App extends React.Component {
             password: this.state["login--password"]
         }
         if (info.email && info.email.match(/.+@.+\..+/) && info.password) {
-            //logic to be written by Dan and Giri together
+            axios.post(window.location.origin + "/users/login", info).then(results => {
+                this.setState({
+                    isLoggedIn: true,
+                    name: results.data.user.name,
+                    token: results.data.token
+                })
+            }).catch(error => {
+                console.log(error);
+            })
         }
+    }
+    handleLogOut = () => {
+        axios.post(window.location.origin + "/users/logout", {}, {headers: {Authorization: `Bearer ${this.state.token}`}}).then(results => {
+            this.setState({
+                isLoggedIn: false,
+                name: null,
+                token: null
+            })
+            window.location.reload()
+        }).catch(error => {
+            console.log(error)
+        })
     }
     handleSignUp = () => {
         const info = {
@@ -174,7 +198,16 @@ class App extends React.Component {
             passwordReenter: this.state["signup--password-reenter"]
         }
         if (info.email && info.email.match(/.+@.+\..+/) && info.password && info.name && info.password === info.passwordReenter) {
-            //logic to be written by Dan and Giri together
+            delete info.passwordReenter;
+            axios.post(window.location.origin + "/users/register", info).then(results => {
+                this.setState({
+                    isLoggedIn: true,
+                    name: results.data.user.name,
+                    token: results.data.token
+                })
+            }).catch(error => {
+                console.log(error)
+            })
         }
     }
     handleLink = path => {
@@ -182,16 +215,16 @@ class App extends React.Component {
             location: path
         })
     }
-
-
-    handleSearchRecipes=(value)=>{
-        const index = value
-        console.log(index)
-        const recipes = [...this.state.recipes];
-        recipes[index] = null;
-        this.setState({ recipes: recipes });
-        
-
+    handleSearchLink = event => {
+        const index = event.target.value;
+        this.setState({ choosing: index });
+    }
+    handleSelectRecipe = recipe => {
+        if (this.state.choosing) {
+            const recipes = [...this.state.recipes];
+            recipes[this.state.choosing] = recipe;
+            this.setState({ recipes: recipes })
+        }
     }
     render() {
         const style = {
@@ -222,7 +255,8 @@ class App extends React.Component {
             toolbar: {
                 handleLink: this.handleLink,
                 isLoggedIn: this.state.isLoggedIn,
-                firstName: this.state.firstName
+                handleLogOut: this.handleLogOut,
+                firstName: this.state.name
             },
             sidebar: {
                 handleLink: this.handleLink,
@@ -235,19 +269,24 @@ class App extends React.Component {
                 handleDragEnd: this.handleDragEnd,
                 handleBlockDay: this.handleBlockDay,
                 handleReshuffle: this.handleReshuffle,
-                handleSearchRecipes: this.handleSearchRecipes,
+                handleSearchLink: this.handleSearchLink,
                 generateGroceryList: this.generateGroceryList,
                 recipes: this.state.recipes,
                 groceryList: this.state.groceryList
             },
             logIn: {
                 handleInputChange: this.handleInputChange,
-                handleLogIn: this.handleLogIn
+                handleLogIn: this.handleLogIn,
+                handleSignUp: this.handleSignUp,
+                isLoggedIn: this.state.isLoggedIn
             },
             groceryList: {
                 groceryList: this.state.groceryList,
                 handleGroceryChange: this.handleGroceryChange,
                 handleCheckbox: this.handleCheckbox
+            },
+            search: {
+                handleSelectRecipe: this.handleSelectRecipe
             }
         }
         return (
@@ -263,7 +302,7 @@ class App extends React.Component {
                             <LogIn {...props.logIn} />
                         </Route>
                         <Route exact path="/searchrecipes">
-                        <SearchRecipes/>
+                            <SearchRecipes {...props.search} />
                         </Route>
                     </Content>
                     <Footer />

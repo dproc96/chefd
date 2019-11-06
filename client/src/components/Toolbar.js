@@ -17,7 +17,7 @@ class Toolbar extends React.Component {
     return (
       <div style={style}>
         <Logo />
-        {this.props.isLoggedIn && <h3>Hello {this.props.firstName}!</h3>}
+        {this.props.isLoggedIn && <h3 style={{margin: 0}}>Hello {this.props.firstName}!</h3>}
         <AccountButton {...this.props} />
       </div>
     );
