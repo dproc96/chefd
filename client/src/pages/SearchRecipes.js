@@ -15,6 +15,7 @@ class SearchRecipes extends Component {
   loadRecipes = () => {
     API.getWeeklyRecipes(this.state.search)
       .then(res =>
+       
         this.setState({ recipes: res.data })
       )
       .catch(err => console.log(err));

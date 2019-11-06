@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const db = require("./models");
 
 
+
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -13,7 +15,9 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/chefd";
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
+
 require("./routes/apiRoutes")(app);
+require('./routes/authRoutes')(app)
 
 const root = path.join(__dirname, "client", "build");
 app.use(express.static(root));
