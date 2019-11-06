@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom'
 class RecipeCard extends Component {
   render() {
     const style = {
-      backgroundColor: theme.blue,
+      backgroundColor: theme.blueTranslucent,
     };
     return (   
       this.props.recipe ?
