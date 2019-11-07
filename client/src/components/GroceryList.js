@@ -12,7 +12,7 @@ class GroceryList extends React.Component {
       let string = `${this.props.groceryList[ingredient].name}${this.props.groceryList[ingredient].amounts[0] ? ` (${this.props.groceryList[ingredient].amounts.join(", ")})` : ""}`;
       string = string.slice(0, 1).toUpperCase() + string.slice(1);
       groceryList.push(
-        <div key={ingredient}>
+        <div value={ingredient} key={ingredient}>
           <li value={string}>
             <GroceryCheckbox handleCheckbox={this.props.handleCheckbox} ingredient={ingredient} checked={this.props.groceryList[ingredient].checked} />
             <input onChange={this.props.handleGroceryChange} name={ingredient} type="text" style={{ display: "inline-block", textDecoration: this.props.groceryList[ingredient].checked ? "line-through" : "none"}} value={string} />

@@ -56,7 +56,7 @@ class RecipeCard extends Component {
           <h4>{title}</h4>
           <img alt={this.props.recipe.title} {...props.img} />
           <div>
-            <p>You are missing ingredients</p>
+            <p>You have {this.props.recipe.ingredients.filter(x => {return x.isInPantry}).length} of {this.props.recipe.ingredients.length} ingredients</p>
           </div>
           <div>
             <a {...props.readMore}><button>Read More</button></a>
