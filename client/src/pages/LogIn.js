@@ -2,6 +2,7 @@ import React from "react";
 import LogInCard from "../components/LogInCard";
 import SignUpCard from "../components/SignUpCard";
 import theme from "../theme";
+import { Redirect } from "react-router-dom";
 
 class LogIn extends React.Component {
   render() {
@@ -23,6 +24,7 @@ class LogIn extends React.Component {
       <div style={style}>
         <LogInCard cardStyle={cardStyle} {...this.props} />
         <SignUpCard cardStyle={cardStyle} {...this.props} />
+        {this.props.isLoggedIn && <Redirect to="/" />}
       </div>
     );
   }
