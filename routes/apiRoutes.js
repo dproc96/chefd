@@ -23,6 +23,31 @@ module.exports = app => {
     });
   });
 
+  //api for getting seven random recipes using title name
+  app.get("/api/recipes/search", (request, response) => {
+    db.RecipeExternal.find({ }, (error, data) => {
+      let query = `${request.query.q}`
+      let regEx = new RegExp(query, 'gi')
+      const results = data.filter(data => data.title.match(regEx))
+      response.json(results)
+    })
+
+  });
+
+  // app.get("/api/recipes/search", (request, response) => {
+  //    db.RecipeExternal.find()
+  //     .limit(parseInt(request.query.limit))
+  //     .skip(parseInt(request.query.skip))
+  //     .then( (error, data)=> {
+  //       if (error) { response.status(500).json(error); return; };
+  //       let query = `${request.query.q}`
+  //       let regEx = new RegExp(query, 'gi')
+  //       const results = data.filter(data => data.title.match(regEx))
+  //       return response.json(results)
+  //     })
+  //   })
+
+
   app.get("/api/recipes/one", (request, response) => {
     db.RecipeExternal.find({}, (error, data) => {
       if (error) {
