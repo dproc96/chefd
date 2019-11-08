@@ -49,7 +49,7 @@ module.exports = app => {
   //   })
 
 
-  app.get("/api/recipes/one", (request, response) => {
+  app.post("/api/recipes/one", (request, response) => {
     db.RecipeExternal.find({}, (error, data) => {
       if (error) {
         response.status(503).end();
