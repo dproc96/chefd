@@ -5,7 +5,7 @@ class PantryInput extends React.Component {
   render() {
     const style = {
       backgroundColor: theme.blueTranslucent,
-      width: 300,
+      width: this.props.isMobile ? "80%" : 300,
       padding: 10,
       margin: 10,
       borderRadius: 5,

@@ -10,6 +10,7 @@ class RecipeCard extends Component {
   render() {
     const style = {
       backgroundColor: theme.blueTranslucent,
+      width: this.props.isMobile ? "80%" : 200
     };
     const props = {
       card: {

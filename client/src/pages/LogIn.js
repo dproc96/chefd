@@ -7,18 +7,19 @@ import { Redirect } from "react-router-dom";
 class LogIn extends React.Component {
   render() {
     const cardStyle = {
-      width: 400,
+      width: this.props.isMobile ? "80%" : 400,
       padding: 20,
       height: "max-content",
       backgroundColor: theme.blue,
       margin: "30px 0px",
       borderRadius: "15px",
       textAlign: "center",
-      boxShadow: "2px 2px 3px 3px rgba(0,0,0,0.3)"
+      boxShadow: "2px 2px 3px 3px rgba(0,0,0,0.3)",
     };
     const style = {
       display: "flex",
       justifyContent: "space-around",
+      flexWrap: "wrap"
     };
     return (
       <div style={style}>
