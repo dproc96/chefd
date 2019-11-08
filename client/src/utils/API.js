@@ -6,7 +6,8 @@ export default {
   getAllRecipes: function () {
     return axios.get("/api/recipes/external");
   },
-    getWeeklyRecipes: function () {
-    return axios.get("/api/recipes/week");
-  }
+    searchRecipesByTitle: function (title,limit) {
+    return axios.get(`/api/recipes/search?q=${title}&limit=${limit}`);
+    }
+  
 }
