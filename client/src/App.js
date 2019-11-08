@@ -54,7 +54,7 @@ class App extends React.Component {
         this.setState({isGroceryListOpen: false})
     }
     getSevenMeals = () => {
-        axios.get(window.location.origin + "/api/recipes/week").then(results => {
+        axios.post(window.location.origin + "/api/recipes/week", this.state.pantry).then(results => {
             this.setState({ recipes: results.data }, this.checkPantry);
         }).catch(error => {
             console.log(error);
@@ -137,7 +137,7 @@ class App extends React.Component {
     handleReshuffle = event => {
         const index = event.target.value;
         const recipes = [...this.state.recipes];
-        axios.get(window.location.origin + "/api/recipes/one").then(results => {
+        axios.post(window.location.origin + "/api/recipes/one", this.state.pantry).then(results => {
             recipes[index] = results.data;
             this.setState({ 
                 recipes: recipes,
