@@ -240,7 +240,8 @@ class App extends React.Component {
     }
     handleLink = path => {
         this.setState({
-            location: path
+            location: path,
+            dropdownOpen: false
         })
     }
     handleSearchLink = event => {

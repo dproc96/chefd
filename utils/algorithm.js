@@ -10,7 +10,7 @@ const Algorithm = {
         ingredientsOwned++;
       }
     }
-    recipe.score = Math.max(1, 50 - (5 * missingIngredients) + (ingredientsOwned));
+    recipe.score = Math.max(1, 50 - (5 * missingIngredients) + (2 * ingredientsOwned));
     return recipe;
   },
   selectRecipeIndex(recipes) {
