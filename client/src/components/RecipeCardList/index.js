@@ -17,7 +17,8 @@ class RecipeCardList extends Component{
             handleReshuffle: this.props.handleReshuffle,
             handleSearchLink: this.props.handleSearchLink,
             day: days[i],
-            recipe: recipe
+            recipe: recipe,
+            isMobile: this.props.isMobile
           };
           return <RecipeCard {...props} value={i} key={i} />;
         })}

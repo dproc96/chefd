@@ -6,7 +6,7 @@ class PantryCard extends React.Component {
   render() {
     const style = {
       backgroundColor: theme.blueTranslucent,
-      width: 300,
+      width: this.props.isMobile ? "80%" : 300,
       minHeight: 100,
       padding: 15,
       margin: 10,

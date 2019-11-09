@@ -15,7 +15,7 @@ class NavLink extends React.Component {
             style.fontWeight = "700"
         }
         return (
-            <Link style={style} onClick={this.handleClick} to={this.props.path}>{this.props.active && "| "}{this.props.name}</Link>
+            <Link style={style} onClick={this.props.name === "Log Out" ? this.props.handleLogOut : this.handleClick} to={this.props.path}>{this.props.active && "| "}{this.props.name}</Link>
         )
     }
 }

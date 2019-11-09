@@ -13,15 +13,16 @@ module.exports = app => {
     });
   });
 
-  app.get("/api/recipes/week", (request, response) => {
+  app.post("/api/recipes/week", (request, response) => {
     db.RecipeExternal.find({}, (error, data) => {
       if (error) {
         response.status(503).end();
       }
-      let recipes = Algorithm.selectSevenRecipes(data);
+      let recipes = Algorithm.selectSevenRecipes(data, request.body);
       response.json(recipes);
     });
   });
+
 
   //api for getting seven random recipes using title name
   app.get("/api/recipes/search", (request, response) => {
@@ -48,12 +49,12 @@ module.exports = app => {
   //   })
 
 
-  app.get("/api/recipes/one", (request, response) => {
+  app.post("/api/recipes/one", (request, response) => {
     db.RecipeExternal.find({}, (error, data) => {
       if (error) {
         response.status(503).end();
       }
-      let recipes = Algorithm.selectRecipe(data);
+      let recipes = Algorithm.selectRecipe(data, request.body);
       response.json(recipes);
     });
   });

@@ -36,6 +36,7 @@
     "passport-local-mongoose": "^5.0.1",
     "react-modal": "^3.11.1",
     "react-router-dom": "^5.1.2",
+    "react-sizes": "^2.0.0",
     "recipe-ingredient-parser-v2": "^1.1.1"
   }
 }

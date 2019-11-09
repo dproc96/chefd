@@ -13,12 +13,13 @@ import SearchRecipes from './pages/SearchRecipes';
 import Modal from 'react-modal';
 import theme from './theme';
 import PantryList from './components/PantryList';
+import withSizes from 'react-sizes';
 
 Modal.setAppElement('#root')
 
 class App extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             isLoggedIn: false,
             name: null,
@@ -26,33 +27,34 @@ class App extends React.Component {
             isGroceryListOpen: false,
             pantry: [],
             recipes: [],
-            pantryItem: ""
+            pantryItem: "",
+            dropdownOpen: false
         };
         this.getSevenMeals();
+        this.navLinks = [
+            {
+                path: "/",
+                name: "Plan your week"
+            },
+            {
+                path: "/pantry",
+                name: "Edit your pantry"
+            },
+            {
+                path: "/account",
+                name: "My Account"
+            },
+            {
+                path: "/favorites",
+                name: "My Favorites"
+            }
+        ];
     }
-    navLinks = [
-        {
-            path: "/",
-            name: "Plan your week"
-        },
-        {
-            path: "/pantry",
-            name: "Edit your pantry"
-        },
-        {
-            path: "/account",
-            name: "My Account"
-        },
-        {
-            path: "/favorites",
-            name: "My Favorites"
-        }
-    ];
     closeGroceryList = () => {
         this.setState({isGroceryListOpen: false})
     }
     getSevenMeals = () => {
-        axios.get(window.location.origin + "/api/recipes/week").then(results => {
+        axios.post(window.location.origin + "/api/recipes/week", this.state.pantry).then(results => {
             this.setState({ recipes: results.data }, this.checkPantry);
         }).catch(error => {
             console.log(error);
@@ -135,7 +137,7 @@ class App extends React.Component {
     handleReshuffle = event => {
         const index = event.target.value;
         const recipes = [...this.state.recipes];
-        axios.get(window.location.origin + "/api/recipes/one").then(results => {
+        axios.post(window.location.origin + "/api/recipes/one", this.state.pantry).then(results => {
             recipes[index] = results.data;
             this.setState({ 
                 recipes: recipes,
@@ -238,7 +240,8 @@ class App extends React.Component {
     }
     handleLink = path => {
         this.setState({
-            location: path
+            location: path,
+            dropdownOpen: false
         })
     }
     handleSearchLink = event => {
@@ -272,12 +275,35 @@ class App extends React.Component {
             pantry: pantry
         }, this.checkPantry);
     }
+    handleDropdown = () => {
+        const open = !this.state.dropdownOpen;
+        this.setState({
+            dropdownOpen: open
+        });
+    }
     render() {
+        if (this.props.isMobile && this.navLinks[1].path === "/pantry") {
+            this.navLinks.splice(1, 0, { path: this.state.isLoggedIn ? "#" : "/login", name: this.state.isLoggedIn ? "Log Out" : "Log In/Sign Up" })
+        }
+        else if (!this.props.isMobile && this.navLinks[1].path !== "/pantry") {
+            this.navLinks.splice(1, 1);
+        }
+        else if (this.navLinks[1].path !== "/pantry") {
+            this.navLinks.splice(1, 1, { path: this.state.isLoggedIn ? "#" : "/login", name: this.state.isLoggedIn ? "Log Out" : "Log In/Sign Up" })
+        }
         const style = {
             display: 'grid',
-            gridTemplateRows: '50px 1fr 60px',
-            gridTemplateColumns: '300px 1fr',
-            gridTemplateAreas: `
+            gridTemplateRows: this.props.isMobile ? "auto" : '50px 1fr 60px',
+            gridTemplateColumns: this.props.isMobile ? "auto" : '300px 1fr',
+            gridTemplateAreas: this.props.isMobile ? 
+            `
+                'toolbar'
+                'sidebar'
+                'content'
+                'footer'
+            `
+            : 
+            `
                 'toolbar toolbar'
                 'sidebar content'
                 'footer footer'
@@ -286,16 +312,22 @@ class App extends React.Component {
         }
         const modalStyle = {
             content: {
-                width: "600px",
+                width: this.props.isMobile ? "200px" : "600px",
                 maxWidth: "80%",
                 left: "50%",
-                marginLeft: "-300px",
+                marginLeft: this.props.isMobile ? "-121px" : "-321px",
                 backgroundColor: theme.blue,
                 textAlign: "center",
                 display: "grid",
-                gridTemplateColumns: "1fr 1fr",
+                gridTemplateColumns: this.props.isMobile ? "1fr" : "1fr 1fr",
                 gridTemplateRows: "auto",
-                gridTemplateAreas: `
+                gridTemplateAreas: this.props.isMobile ? 
+                `
+                    'grocery'
+                    'button'
+                `
+                :
+                `
                     'pantry grocery'
                     'button button'
                 `,
@@ -306,17 +338,22 @@ class App extends React.Component {
         }
         const props = {
             toolbar: {
+                isMobile: this.props.isMobile,
                 handleLink: this.handleLink,
                 isLoggedIn: this.state.isLoggedIn,
                 handleLogOut: this.handleLogOut,
-                firstName: this.state.name
+                firstName: this.state.name,
+                handleDropdown: this.handleDropdown
             },
             sidebar: {
+                isMobile: this.props.isMobile,
                 handleLink: this.handleLink,
                 location: this.state.location,
-                navLinks: this.navLinks
+                navLinks: this.navLinks,
+                handleLogOut: this.handleLogOut,
             },
             mealPlan: {
+                isMobile: this.props.isMobile,
                 handleDragCardStart: this.handleDragCardStart,
                 handleDragOver: this.handleDragOver,
                 handleDragEnd: this.handleDragEnd,
@@ -328,12 +365,14 @@ class App extends React.Component {
                 groceryList: this.state.groceryList
             },
             logIn: {
+                isMobile: this.props.isMobile,
                 handleInputChange: this.handleInputChange,
                 handleLogIn: this.handleLogIn,
                 handleSignUp: this.handleSignUp,
                 isLoggedIn: this.state.isLoggedIn
             },
             groceryList: {
+                isMobile: this.props.isMobile,
                 groceryList: this.state.groceryList,
                 handleGroceryChange: this.handleGroceryChange,
                 handleCheckbox: this.handleCheckbox,
@@ -343,6 +382,7 @@ class App extends React.Component {
                 }
             },
             pantryList: {
+                isMobile: this.props.isMobile,
                 pantry: this.state.pantry,
                 handleRemoveItemFromPantry: this.handleRemoveItemFromPantry,
                 showTitle: true,
@@ -353,9 +393,11 @@ class App extends React.Component {
                 }
             },
             search: {
+                isMobile: this.props.isMobile,
                 handleSelectRecipe: this.handleSelectRecipe
             },
             pantry: {
+                isMobile: this.props.isMobile,
                 handleInputChange: this.handleInputChange,
                 pantryItem: this.state.pantryItem,
                 pantry: this.state.pantry,
@@ -368,7 +410,7 @@ class App extends React.Component {
             <Router>
                 <div style={style}>
                     <Toolbar {...props.toolbar} />
-                    <Sidebar {...props.sidebar} />
+                    {(this.state.dropdownOpen || !this.props.isMobile) && <Sidebar {...props.sidebar} />}
                     <Content>
                         <Route exact path="/">
                             <MealPlan {...props.mealPlan} />
@@ -386,13 +428,19 @@ class App extends React.Component {
                     <Footer />
                 </div>
                 <Modal style={modalStyle} isOpen={this.state.isGroceryListOpen}>
-                    <PantryList {...props.pantryList} />
+                    {!this.props.isMobile && <PantryList {...props.pantryList} />}
                     <GroceryList {...props.groceryList} />
-                    <button style={{gridArea: "button", textAlign: "center"}} onClick={this.closeGroceryList}>Close List</button>
+                    <div style={{ gridArea: "button", textAlign: "center" }}>
+                        <button onClick={this.closeGroceryList}>Close List</button>
+                    </div>
                 </Modal>
             </Router>
         )
     }
 }
 
-export default App;
+const mapSizesToProps = ({ width }) => ({
+    isMobile: width < 480
+});
+
+export default withSizes(mapSizesToProps)(App);
