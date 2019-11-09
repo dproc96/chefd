@@ -14,6 +14,7 @@ import Modal from 'react-modal';
 import theme from './theme';
 import PantryList from './components/PantryList';
 import withSizes from 'react-sizes';
+import Favorites from './pages/Favorites';
 
 Modal.setAppElement('#root')
 
@@ -27,6 +28,7 @@ class App extends React.Component {
             isGroceryListOpen: false,
             pantry: [],
             recipes: [],
+            favorites: [],
             pantryItem: "",
             dropdownOpen: false
         };
@@ -55,7 +57,7 @@ class App extends React.Component {
     }
     getSevenMeals = () => {
         axios.post(window.location.origin + "/api/recipes/week", this.state.pantry).then(results => {
-            this.setState({ recipes: results.data }, this.checkPantry);
+            this.setState({ recipes: results.data }, this.checkProfile);
         }).catch(error => {
             console.log(error);
         })
@@ -113,6 +115,24 @@ class App extends React.Component {
             recipes: recipes
         }, () => {this.generateGroceryList(this.state.isGroceryListOpen)})
     }
+    checkFavorites = () => {
+        const recipes = [...this.state.recipes];
+        for (let recipe of recipes) {
+            if (this.state.favorites.includes(recipe._id)) {
+                recipe.isFavorite = true;
+            }
+            else {
+                recipe.isFavorite = false;
+            }
+        }
+        this.setState({
+            recipes: recipes
+        });
+    }
+    checkProfile = () => {
+        this.checkPantry();
+        this.checkFavorites();
+    }
     handleCheckbox = event => {
         const groceryList = this.state.groceryList;
         const ingredient = event.target.id;
@@ -142,7 +162,7 @@ class App extends React.Component {
             this.setState({ 
                 recipes: recipes,
                 groceryList: null
-            }, this.checkPantry)
+            }, this.checkProfile)
         }).catch(error => {
             console.log(error)
         })
@@ -281,6 +301,21 @@ class App extends React.Component {
             dropdownOpen: open
         });
     }
+    handleFavoriteUnfavorite = event => {
+        const _id = event.target.id;
+        console.log(_id)
+        const favorites = [...this.state.favorites];
+        const index = favorites.indexOf(_id)
+        if (index > -1) {
+            favorites.splice(index, 1);
+        }
+        else {
+            favorites.push(_id);
+        }
+        this.setState({
+            favorites: favorites
+        }, this.checkFavorites);
+    }
     render() {
         if (this.props.isMobile && this.navLinks[1].path === "/pantry") {
             this.navLinks.splice(1, 0, { path: this.state.isLoggedIn ? "#" : "/login", name: this.state.isLoggedIn ? "Log Out" : "Log In/Sign Up" })
@@ -361,8 +396,11 @@ class App extends React.Component {
                 handleReshuffle: this.handleReshuffle,
                 handleSearchLink: this.handleSearchLink,
                 generateGroceryList: this.generateGroceryList,
+                handleLink: this.handleLink,
+                location: this.state.location,
                 recipes: this.state.recipes,
-                groceryList: this.state.groceryList
+                groceryList: this.state.groceryList,
+                handleFavoriteUnfavorite: this.handleFavoriteUnfavorite
             },
             logIn: {
                 isMobile: this.props.isMobile,
@@ -394,7 +432,10 @@ class App extends React.Component {
             },
             search: {
                 isMobile: this.props.isMobile,
-                handleSelectRecipe: this.handleSelectRecipe
+                generateGroceryList: this.generateGroceryList,
+                location: this.state.location,
+                handleSelectRecipe: this.handleSelectRecipe,
+                handleFavoriteUnfavorite: this.handleFavoriteUnfavorite
             },
             pantry: {
                 isMobile: this.props.isMobile,
@@ -404,6 +445,11 @@ class App extends React.Component {
                 handleAddItemToPantry: this.handleAddItemToPantry,
                 handleRemoveItemFromPantry: this.handleRemoveItemFromPantry,
                 isLoggedIn: this.state.isLoggedIn
+            },
+            favorites: {
+                favorites: this.state.favorites,
+                isMobile: this.props.isMobile,
+                handleFavoriteUnfavorite: this.handleFavoriteUnfavorite
             }
         }
         return (
@@ -423,6 +469,9 @@ class App extends React.Component {
                         </Route>
                         <Route exact path="/pantry">
                             <Pantry {...props.pantry} />
+                        </Route>
+                        <Route exact path="/favorites">
+                            <Favorites {...props.favorites} />
                         </Route>
                     </Content>
                     <Footer />

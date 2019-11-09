@@ -1,8 +1,13 @@
 const db = require("../models");
 const Algorithm = require("../utils/algorithm");
 const Scraper = require("../utils/scraper");
+<<<<<<< Updated upstream
 const auth = require('../middleware/auth')
 const PER_PAGE=10
+=======
+const auth = require('../middleware/auth');
+const Fetcher = require("../utils/fetcher");
+>>>>>>> Stashed changes
 
 module.exports = app => {
   app.get("/api/recipes/external", (request, response) => {
@@ -37,45 +42,6 @@ module.exports = app => {
       })
   });
 
- 
-
-  // app.get('/api/recipes/search', function (req, res) {
-
-  //   const offset = req.query.offset ? parseInt(req.query.offset, 10) : 0;
-  //   const nextOffset = offset + PER_PAGE;
-  //   const previousOffset = offset - PER_PAGE < 1 ? 0 : offset - PER_PAGE;
-
-  //   const recipes = []
-  //   let query = `${request.query.q}`
-  //   let regEx = new RegExp(query, 'gi')
-  //   db.RecipeExternal
-  //   .find({ "title": { "$regex": regEx }})
-  //   .then(recipe =>{
-  //     recipes.push(recipe)
-  //     return recipes.slice(offset, offset + PER_PAGE);
- 
-  //   })
-
-  //   const meta = {
-  //     limit: PER_PAGE,
-  //     next: util.format('?limit=%s&offset=%s', PER_PAGE, nextOffset),
-  //     offset: req.query.offset,
-  //     previous: util.format('?limit=%s&offset=%s', PER_PAGE, previousOffset),
-  //     total_count: recipes.length,
-  //   };
-  //   console.log(recipes.length)
-
-  //   var json = {
-  //     meta: meta,
-  //     paginatedRecipes: recipes.slice(offset, offset + PER_PAGE),
-  //   };
-
-  //    res.json(json);
-  // });
-
-
-
-
   app.post("/api/recipes/one", (request, response) => {
     db.RecipeExternal.find({}, (error, data) => {
       if (error) {
@@ -97,26 +63,11 @@ module.exports = app => {
     });
   });
 
-  app.post("/api/account/favouriterecipes", auth, async(req,res)=>{
-    //create the association of the Useraccount with the user from auth
-    const userAccount = new db.UserAccount({
-      ...req.body,
-      owner:req.user._id
-    })
-    try {
-      await userAccount.save()
-      res.status(201).send(userAccount)
-    } catch (e) {
-      res.status(400).send(e)
-    }
-  })
-
-  app.post("/api/account/pantry", (req, res) => {
-
-
-  })
-
-
-
+  app.post("/api/recipes/external", async function(request, response) {
+    const ids = request.body.ids;
+    console.log(ids);
+    const recipes = await Fetcher.fetchArrayOfRecipes(ids);
+    response.json(recipes);
+  });
 };
 

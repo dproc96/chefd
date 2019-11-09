@@ -46,7 +46,7 @@ button {
     border: none;
     border-radius: 5px;
     margin: 5px;
-    width: 40%;
+    width: 90px;
     min-height: 46px;
 }
 
@@ -69,7 +69,7 @@ a:hover {
     font-weight: 700;
 }
 
-.fas:hover {
+i:hover {
     font-weight: 900;
     cursor: pointer;
 }
