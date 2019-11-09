@@ -70,14 +70,20 @@ module.exports = app => {
   });
 
   app.post("/api/account/favouriterecipes", auth, async(req,res)=>{
-    //create the association of the Useraccount with the user from auth
-    const userAccount = new db.UserAccount({
+    //create the association of the Favourite recipes with the user from auth
+    const profile = new db.Profile({
       ...req.body,
       owner:req.user._id
     })
+    db.Profile.create(req.body, (error, data) => {
+      if (error) {
+        response.status(503).end();
+      }
+      response.json({message: "Creating user"});
+    });
     try {
-      await userAccount.save()
-      res.status(201).send(userAccount)
+      await profile.save()
+      res.status(201).send(profile)
     } catch (e) {
       res.status(400).send(e)
     }
