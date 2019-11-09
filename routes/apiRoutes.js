@@ -66,29 +66,24 @@ module.exports = app => {
     response.json(recipes);
   });
   
-  app.post("/api/profile", auth, async(req,res)=>{
-    //create the association of the Favourite recipes with the user from auth
-    const profile = new db.Profile({
-      ...req.body,
-      owner:req.user._id
-    })
-    db.Profile.update(req.body, (error, data) => {
+  app.post("/api/profile", auth, async(request, response)=>{
+    const profile = request.body;
+    db.Profile.updateOne({ owner: request.user._id }, profile, (error, data) => {
       if (error) {
         response.status(503).end();
       }
-      response.json({message: "User Profile"});
+      console.log(data);
+      response.status(200).end();
     });
-    try {
-      await profile.save()
-      res.status(201).send(profile)
-    } catch (e) {
-      res.status(400).send(e)
-    }
   });
 
-  app.post("/api/account/pantry", (req, res) => {
-
-
+  app.get("/api/profile", (req, res) => {
+    db.Profile.find({ owner: request._id }, (error, data) => {
+      if (error) {
+        res.status(503).end()
+      }
+      res.json(data);
+    })
   })
 
 
