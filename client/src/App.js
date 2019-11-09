@@ -215,11 +215,15 @@ class App extends React.Component {
         }
         if (info.email && info.email.match(/.+@.+\..+/) && info.password) {
             axios.post(window.location.origin + "/users/login", info).then(results => {
+                console.log(results)
+
                 this.setState({
                     isLoggedIn: true,
                     name: results.data.user.name,
                     token: results.data.token,
-                    location: "/"
+                    location: "/",
+                    favorites: [...results.data.user.profile.favorites],
+                    pantry: [...results.data.user.profile.pantry]
                 })
             }).catch(error => {
                 console.log(error);
@@ -248,10 +252,13 @@ class App extends React.Component {
         if (info.email && info.email.match(/.+@.+\..+/) && info.password && info.name && info.password === info.passwordReenter) {
             delete info.passwordReenter;
             axios.post(window.location.origin + "/users/register", info).then(results => {
+                console.log(results)
                 this.setState({
                     isLoggedIn: true,
                     name: results.data.user.name,
-                    token: results.data.token
+                    token: results.data.token,
+                    favorites: results.data.user.profile.favorites,
+                    pantry: results.data.user.profile.pantry
                 })
             }).catch(error => {
                 console.log(error)
@@ -284,7 +291,10 @@ class App extends React.Component {
             this.setState({ 
                 pantry: pantry,
                 pantryItem: ""
-            }, this.checkPantry)
+            }, () => {
+                this.checkPantry();
+                this.pushProfile();
+            })
         }
     }
     handleRemoveItemFromPantry = event => {
@@ -293,7 +303,10 @@ class App extends React.Component {
         pantry.splice(index, 1);
         this.setState({
             pantry: pantry
-        }, this.checkPantry);
+        }, () => {
+            this.checkPantry();
+            this.pushProfile();
+        });
     }
     handleDropdown = () => {
         const open = !this.state.dropdownOpen;
@@ -314,7 +327,21 @@ class App extends React.Component {
         }
         this.setState({
             favorites: favorites
-        }, this.checkFavorites);
+        }, () => {
+            this.checkFavorites();
+            this.pushProfile();
+        });
+    }
+    pushProfile = () => {
+        const profile = {
+            favorites: [...this.state.favorites],
+            pantry: [...this.state.pantry]
+        }
+        axios.post(`${window.location.origin}/api/profile`, profile, { headers: { Authorization: `Bearer ${this.state.token}` }}).then(results => {
+
+        }).catch(error => {
+            console.log(error)
+        })
     }
     render() {
         if (this.props.isMobile && this.navLinks[1].path === "/pantry") {

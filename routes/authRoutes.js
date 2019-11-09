@@ -6,28 +6,33 @@ module.exports = app => {
  
   app.post('/users/register', async(req,res) => {
     const user = new db.User(req.body)
-  
+    
     try {
-       await user.save();
-       const  profile = new db.Profile({owner: user._id}) 
-       await profile.save()
-  
-       const token = await user.generateAuthToken()
-       return res.status(201).send({user,token})
+      const profile = new db.Profile({owner: user._id});
+      console.log(profile._id)
+
+      user.profile = profile._id;
+      console.log(user)
+      await user.save();
+      await profile.save();
+      const token = await user.generateAuthToken();
+      return res.status(201).send({user,token})
 
     } catch (e) {
+      console.log(e)
        return  res.status(400).send(e)
   }
 });
 
  app.post('/users/login', async (req, res) => {
     try{
-      const user = await db.User.findByCredentials(req.body.email, req.body.password)
+      const user = await db.User.findOne({email: req.body.email}).populate("profile")
       const token = await user.generateAuthToken()
       console.log(token)
 
       res.status(200).send({user,token});
     }catch(e){
+      console.log(e)
       res.status(400).send(e)
 
     }

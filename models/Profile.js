@@ -5,7 +5,7 @@ const ProfileSchema = new mongoose.Schema({
     type: Array,
     default: []
   },
-  favourite: [{ type: mongoose.Schema.Types.ObjectId, ref: "RecipeExternal", default: [] }],
+  favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "RecipeExternal", default: [] }],
   
   owner : {
     type: mongoose.Schema.Types.ObjectId,
