@@ -15,8 +15,8 @@ class Pantry extends React.Component {
     return (
       this.props.isLoggedIn ?
         <div style={style}>
-          <PantryCard handleRemoveItemFromPantry={this.props.handleRemoveItemFromPantry} pantry={this.props.pantry} />
-          <PantryInput handleAddItemToPantry={this.props.handleAddItemToPantry} value={this.props.pantryItem} handleInputChange={this.props.handleInputChange} />
+          <PantryCard isMobile={this.props.isMobile} handleRemoveItemFromPantry={this.props.handleRemoveItemFromPantry} pantry={this.props.pantry} />
+          <PantryInput isMobile={this.props.isMobile} handleAddItemToPantry={this.props.handleAddItemToPantry} value={this.props.pantryItem} handleInputChange={this.props.handleInputChange} />
         </div>
         :
         <div style={style}>

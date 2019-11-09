@@ -10,6 +10,7 @@ class RecipeCard extends Component {
   render() {
     const style = {
       backgroundColor: theme.blueTranslucent,
+      width: this.props.isMobile ? "80%" : 200
     };
     const props = {
       card: {
@@ -49,11 +50,11 @@ class RecipeCard extends Component {
         onClick: this.handleSelect
       }
     };
-    const title = `${this.props.day ? this.props.day + " -- " : ""}"${this.props.recipe && this.props.recipe.title}"`;
     return (   
       this.props.recipe ?
         <div {...props.card}>
-          <h4>{title}</h4>
+          {this.props.day && <h4 style={{borderBottom: "1px solid " + theme.darkBlue, marginBottom: "5px"}}>{this.props.day}</h4>}
+          <h4>{this.props.recipe.title}</h4>
           <img alt={this.props.recipe.title} {...props.img} />
           <div>
             <p>You have {this.props.recipe.ingredients.filter(x => {return x.isInPantry}).length} of {this.props.recipe.ingredients.length} ingredients</p>
