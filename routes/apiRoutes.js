@@ -1,13 +1,9 @@
 const db = require("../models");
 const Algorithm = require("../utils/algorithm");
 const Scraper = require("../utils/scraper");
-<<<<<<< Updated upstream
-const auth = require('../middleware/auth')
 const PER_PAGE=10
-=======
 const auth = require('../middleware/auth');
 const Fetcher = require("../utils/fetcher");
->>>>>>> Stashed changes
 
 module.exports = app => {
   app.get("/api/recipes/external", (request, response) => {
@@ -69,5 +65,33 @@ module.exports = app => {
     const recipes = await Fetcher.fetchArrayOfRecipes(ids);
     response.json(recipes);
   });
+  
+  app.post("/api/profile", auth, async(req,res)=>{
+    //create the association of the Favourite recipes with the user from auth
+    const profile = new db.Profile({
+      ...req.body,
+      owner:req.user._id
+    })
+    db.Profile.update(req.body, (error, data) => {
+      if (error) {
+        response.status(503).end();
+      }
+      response.json({message: "User Profile"});
+    });
+    try {
+      await profile.save()
+      res.status(201).send(profile)
+    } catch (e) {
+      res.status(400).send(e)
+    }
+  });
+
+  app.post("/api/account/pantry", (req, res) => {
+
+
+  })
+
+
+
 };
 

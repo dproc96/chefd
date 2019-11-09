@@ -30,7 +30,7 @@
     "if-env": "^1.0.4",
     "ingredientparser": "0.0.3",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.13",
     "mongoose": "^5.7.7",
     "paginate-array": "^2.1.0",
     "passport-local-mongoose": "^5.0.1",
