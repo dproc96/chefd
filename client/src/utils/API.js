@@ -6,8 +6,8 @@ export default {
   getAllRecipes: function () {
     return axios.get("/api/recipes/external");
   },
-    searchRecipesByTitle: function (title,limit) {
-    return axios.get(`/api/recipes/search?q=${title}&limit=${limit}`);
+    searchRecipesByTitle: function (title) {
+    return axios.get(`/api/recipes/search?q=${title}`);
     }
   
 }
