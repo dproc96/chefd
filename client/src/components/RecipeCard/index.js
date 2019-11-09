@@ -50,27 +50,33 @@ class RecipeCard extends Component {
         onClick: this.handleSelect
       }
     };
+    const starClass = this.props.recipe.isFavorite ? "fas" : "far"
+    console.log(this.props.location)
     return (   
       this.props.recipe ?
         <div {...props.card}>
-          {this.props.day && <h4 style={{borderBottom: "1px solid " + theme.darkBlue, marginBottom: "5px"}}>{this.props.day}</h4>}
+          <div style={{display: this.props.location === "/" ? "flex" : "none", justifyContent: "space-between", width: "100%"}}>
+            <i onClick={this.props.handleFavoriteUnfavorite} id={this.props.recipe._id} className={starClass + " fa-star"}></i>
+            {this.props.day && <h4 style={{borderBottom: "1px solid " + theme.darkBlue, marginBottom: "5px"}}>{this.props.day}</h4>}
+            <i style={{visibility: "hidden"}} className="far fa-star"></i>
+          </div>
           <h4>{this.props.recipe.title}</h4>
           <img alt={this.props.recipe.title} {...props.img} />
           <div>
             <p>You have {this.props.recipe.ingredients.filter(x => {return x.isInPantry}).length} of {this.props.recipe.ingredients.length} ingredients</p>
           </div>
-          <div>
+          <div style={{display: "flex", flexWrap: "wrap", justifyContent: "space-around"}}>
             <a {...props.readMore}><button>Read More</button></a>
-            <button {...props.reshuffle}>Reshuffle</button>
-            {window.location.pathname === "/" && 
-              <Link to ="/searchrecipes">
+            {this.props.location === "/" && <button {...props.reshuffle}>Reshuffle</button>}
+            {this.props.location === "/" && 
+              <Link onClick={() => {this.props.handleLink("/searchrecipes")}} to ="/searchrecipes">
                 <button {...props.choose}>Choose Yourself!</button>
               </Link>
             }
-            {window.location.pathname === "/" &&
+            {this.props.location === "/" &&
               <button {...props.block}>Block Off Day</button>
             }
-            {window.location.pathname !== "/" &&
+            {this.props.location === "/searchrecipes" &&
               <Link to="/">
                 <button {...props.select}>Select</button>
               </Link>

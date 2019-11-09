@@ -16,13 +16,16 @@ class RecipeCardList extends Component{
             handleBlockDay: this.props.handleBlockDay,
             handleReshuffle: this.props.handleReshuffle,
             handleSearchLink: this.props.handleSearchLink,
+            handleFavoriteUnfavorite: this.props.handleFavoriteUnfavorite,
+            handleLink: this.props.handleLink,
+            location: this.props.location,
             day: days[i],
             recipe: recipe,
             isMobile: this.props.isMobile
           };
           return <RecipeCard {...props} value={i} key={i} />;
         })}
-        <button onClick={this.props.generateGroceryList}>Generate Grocery List</button>
+        <button style={{width: "40%"}} onClick={this.props.generateGroceryList}>Generate Grocery List</button>
       </div>
     );
   }
