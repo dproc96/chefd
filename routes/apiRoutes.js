@@ -2,6 +2,7 @@ const db = require("../models");
 const Algorithm = require("../utils/algorithm");
 const Scraper = require("../utils/scraper");
 const auth = require('../middleware/auth')
+const PER_PAGE=10
 
 module.exports = app => {
   app.get("/api/recipes/external", (request, response) => {
@@ -23,29 +24,56 @@ module.exports = app => {
     });
   });
 
+
   //api for getting seven random recipes using title name
   app.get("/api/recipes/search", (request, response) => {
-    db.RecipeExternal.find({ }, (error, data) => {
-      let query = `${request.query.q}`
-      let regEx = new RegExp(query, 'gi')
-      const results = data.filter(data => data.title.match(regEx))
-      response.json(results)
-    })
-
+    let query = `${request.query.q}`
+    let regEx = new RegExp(query, 'gi')
+    //let page = `${request.query.page}`
+    db.RecipeExternal
+      .find({ "title": { "$regex": regEx } })
+      .then(recipe => {
+        response.json(recipe)
+      })
   });
 
-  // app.get("/api/recipes/search", (request, response) => {
-  //    db.RecipeExternal.find()
-  //     .limit(parseInt(request.query.limit))
-  //     .skip(parseInt(request.query.skip))
-  //     .then( (error, data)=> {
-  //       if (error) { response.status(500).json(error); return; };
-  //       let query = `${request.query.q}`
-  //       let regEx = new RegExp(query, 'gi')
-  //       const results = data.filter(data => data.title.match(regEx))
-  //       return response.json(results)
-  //     })
+ 
+
+  // app.get('/api/recipes/search', function (req, res) {
+
+  //   const offset = req.query.offset ? parseInt(req.query.offset, 10) : 0;
+  //   const nextOffset = offset + PER_PAGE;
+  //   const previousOffset = offset - PER_PAGE < 1 ? 0 : offset - PER_PAGE;
+
+  //   const recipes = []
+  //   let query = `${request.query.q}`
+  //   let regEx = new RegExp(query, 'gi')
+  //   db.RecipeExternal
+  //   .find({ "title": { "$regex": regEx }})
+  //   .then(recipe =>{
+  //     recipes.push(recipe)
+  //     return recipes.slice(offset, offset + PER_PAGE);
+ 
   //   })
+
+  //   const meta = {
+  //     limit: PER_PAGE,
+  //     next: util.format('?limit=%s&offset=%s', PER_PAGE, nextOffset),
+  //     offset: req.query.offset,
+  //     previous: util.format('?limit=%s&offset=%s', PER_PAGE, previousOffset),
+  //     total_count: recipes.length,
+  //   };
+  //   console.log(recipes.length)
+
+  //   var json = {
+  //     meta: meta,
+  //     paginatedRecipes: recipes.slice(offset, offset + PER_PAGE),
+  //   };
+
+  //    res.json(json);
+  // });
+
+
 
 
   app.get("/api/recipes/one", (request, response) => {

@@ -353,7 +353,8 @@ class App extends React.Component {
                 }
             },
             search: {
-                handleSelectRecipe: this.handleSelectRecipe
+                handleSelectRecipe: this.handleSelectRecipe,
+     
             },
             pantry: {
                 handleInputChange: this.handleInputChange,
