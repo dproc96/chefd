@@ -2,9 +2,10 @@ const mongoose = require("mongoose");
 
 const ProfileSchema = new mongoose.Schema({
   pantry: {
-    type: Array
+    type: Array,
+    default: []
   },
-  favourite: [{ type: mongoose.Schema.Types.ObjectId, ref: "RecipeExternal" }],
+  favourite: [{ type: mongoose.Schema.Types.ObjectId, ref: "RecipeExternal", default: [] }],
   
   owner : {
     type: mongoose.Schema.Types.ObjectId,
