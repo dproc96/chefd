@@ -30,7 +30,6 @@ module.exports = app => {
   app.get("/api/recipes/search", (request, response) => {
     let query = `${request.query.q}`
     let regEx = new RegExp(query, 'gi')
-    //let page = `${request.query.page}`
     db.RecipeExternal
       .find({ "title": { "$regex": regEx } })
       .then(recipe => {
@@ -61,7 +60,6 @@ module.exports = app => {
 
   app.post("/api/recipes/external", async function(request, response) {
     const ids = request.body.ids;
-    console.log(ids);
     const recipes = await Fetcher.fetchArrayOfRecipes(ids);
     response.json(recipes);
   });
@@ -72,7 +70,6 @@ module.exports = app => {
       if (error) {
         response.status(503).end();
       }
-      console.log(data);
       response.status(200).end();
     });
   });

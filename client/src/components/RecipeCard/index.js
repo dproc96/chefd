@@ -50,12 +50,12 @@ class RecipeCard extends Component {
         onClick: this.handleSelect
       }
     };
-    const starClass = this.props.recipe.isFavorite ? "fas" : "far"
+    const starClass = this.props.recipe && this.props.recipe.isFavorite ? "fas" : "far"
     console.log(this.props.location)
     return (   
       this.props.recipe ?
         <div {...props.card}>
-          <div style={{display: this.props.location === "/" ? "flex" : "none", justifyContent: "space-between", width: "100%"}}>
+          <div style={{display: "flex", justifyContent: "space-between", width: "100%"}}>
             <i onClick={this.props.handleFavoriteUnfavorite} id={this.props.recipe._id} className={starClass + " fa-star"}></i>
             {this.props.day && <h4 style={{borderBottom: "1px solid " + theme.darkBlue, marginBottom: "5px"}}>{this.props.day}</h4>}
             <i style={{visibility: "hidden"}} className="far fa-star"></i>
