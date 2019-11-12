@@ -15,6 +15,8 @@ import theme from './theme';
 import PantryList from './components/PantryList';
 import withSizes from 'react-sizes';
 import Favorites from './pages/Favorites';
+import API from './utils/API.js';
+import paginate from 'paginate-array';
 
 Modal.setAppElement('#root')
 
@@ -28,6 +30,16 @@ class App extends React.Component {
             isGroceryListOpen: false,
             pantry: [],
             recipes: [],
+            search: "",
+            searchStates: {
+                search: "",
+                recipes: [],
+                error: "",
+                size: 7,
+                page: 1,
+                currPage: null
+            },
+            favoriteRecipes: [],
             favorites: [],
             pantryItem: "",
             dropdownOpen: false
@@ -53,7 +65,7 @@ class App extends React.Component {
         ];
     }
     closeGroceryList = () => {
-        this.setState({isGroceryListOpen: false})
+        this.setState({ isGroceryListOpen: false })
     }
     getSevenMeals = () => {
         axios.post(window.location.origin + "/api/recipes/week", this.state.pantry).then(results => {
@@ -96,48 +108,117 @@ class App extends React.Component {
         }
     }
     checkPantry = () => {
-        const recipes = [...this.state.recipes];
+        const recipesArrays = [[...this.state.recipes], [...this.state.searchStates.recipes], [...this.state.favoriteRecipes]];
         const pantry = [...this.state.pantry];
-        for (let recipe of recipes) {
-            for (let ingredient of recipe.ingredients) {
-                if (ingredient.ingredient) {
-                    let isInPantry = false
-                    for (let item of pantry) {
-                        if (ingredient.ingredient.toLowerCase().indexOf(item.toLowerCase()) > -1) {
-                            isInPantry = true;
+        for (let recipes of recipesArrays) {
+            for (let recipe of recipes) {
+                if (recipe) {
+                    for (let ingredient of recipe.ingredients) {
+                        if (ingredient.ingredient) {
+                            let isInPantry = false
+                            for (let item of pantry) {
+                                if (ingredient.ingredient.toLowerCase().indexOf(item.toLowerCase()) > -1) {
+                                    isInPantry = true;
+                                }
+                            }
+                            ingredient.isInPantry = isInPantry;
                         }
                     }
-                    ingredient.isInPantry = isInPantry;
                 }
             }
         }
         this.setState({
-            recipes: recipes
-        }, () => {this.generateGroceryList(this.state.isGroceryListOpen)})
+            recipes: recipesArrays[0],
+            searchStates: {
+                ...this.state.searchStates,
+                recipes: recipesArrays[1]
+            },
+            favoriteRecipes: recipesArrays[2]
+        }, () => { this.generateGroceryList(this.state.isGroceryListOpen) })
     }
     checkFavorites = () => {
-        const recipes = [...this.state.recipes];
-        for (let recipe of recipes) {
-            if (this.state.favorites.includes(recipe._id)) {
-                recipe.isFavorite = true;
-            }
-            else {
-                recipe.isFavorite = false;
+        const recipesArrays = [[...this.state.recipes], [...this.state.searchStates.recipes], [...this.state.favoriteRecipes]];
+        for (let recipes of recipesArrays) {
+            for (let recipe of recipes) {
+                if (recipe) {
+                    if (this.state.favorites.includes(recipe._id)) {
+                        recipe.isFavorite = true;
+                    }
+                    else {
+                        recipe.isFavorite = false;
+                    }
+                }
             }
         }
         this.setState({
-            recipes: recipes
+            recipes: recipesArrays[0],
+            searchStates: {
+                ...this.state.searchStates,
+                recipes: recipesArrays[1]
+            },
+            favoriteRecipes: recipesArrays[2]
         });
     }
     checkProfile = () => {
         this.checkPantry();
         this.checkFavorites();
     }
+    loadRecipes = () => {
+        API.searchRecipesByTitle(this.state.search)
+            .then(recipes => {
+                const { page, size } = this.state.searchStates;
+                const currPage = paginate(recipes.data, page, size);
+                this.setState({
+                    searchStates: {
+                        ...this.state.searchStates,
+                        recipes: recipes.data,
+                        currPage: currPage
+                    }
+                });
+            })
+            .catch(err => console.log(err));
+    };
+    handlePreviousPage = () => {
+        const { page, size, recipes } = this.state;
+
+        if (page > 1) {
+            const newPage = page - 1;
+            const newCurrPage = paginate(recipes, newPage, size);
+
+            this.setState({
+                searchStates: {
+                    ...this.state.searchStates,
+                    page: newPage,
+                    currPage: newCurrPage
+                }
+            });
+        }
+    }
+    handleNextPage = () => {
+        const { currPage, page, size, recipes } = this.state;
+        if (page < currPage.totalPages) {
+            const newPage = page + 1;
+            const newCurrPage = paginate(recipes, newPage, size);
+            console.log(newCurrPage)
+            this.setState({
+                searchStates: {
+                    ...this.state.searchStates,
+                    page: newPage,
+                    currPage: newCurrPage
+                }
+            });
+            console.log(this.state)
+        }
+    }
+    handleSearchButton = event => {
+        event.preventDefault();
+        this.loadRecipes()
+    };
     handleCheckbox = event => {
         const groceryList = this.state.groceryList;
         const ingredient = event.target.id;
         groceryList[ingredient].checked = !groceryList[ingredient].checked;
-        this.setState({groceryList: groceryList});
+        this.setState({ groceryList: groceryList });
     }
     handleInputChange = event => {
         const { name, value } = event.target;
@@ -147,7 +228,7 @@ class App extends React.Component {
     }
     handleGroceryChange = event => {
         const { name, value } = event.target;
-        const groceryList = {...this.state.groceryList};
+        const groceryList = { ...this.state.groceryList };
         groceryList[name].name = value;
         groceryList[name].amounts = [""];
         this.setState({
@@ -159,7 +240,7 @@ class App extends React.Component {
         const recipes = [...this.state.recipes];
         axios.post(window.location.origin + "/api/recipes/one", this.state.pantry).then(results => {
             recipes[index] = results.data;
-            this.setState({ 
+            this.setState({
                 recipes: recipes,
                 groceryList: null
             }, this.checkProfile)
@@ -171,7 +252,7 @@ class App extends React.Component {
         const index = event.target.value;
         const recipes = [...this.state.recipes];
         recipes[index] = null;
-        this.setState({ 
+        this.setState({
             recipes: recipes,
             groceryList: null
         });
@@ -231,7 +312,7 @@ class App extends React.Component {
         }
     }
     handleLogOut = () => {
-        axios.post(window.location.origin + "/users/logout", {}, {headers: {Authorization: `Bearer ${this.state.token}`}}).then(results => {
+        axios.post(window.location.origin + "/users/logout", {}, { headers: { Authorization: `Bearer ${this.state.token}` } }).then(results => {
             this.setState({
                 isLoggedIn: false,
                 name: null,
@@ -288,7 +369,7 @@ class App extends React.Component {
         item = item.slice(0, 1).toUpperCase() + item.slice(1);
         if (item) {
             pantry.push(item);
-            this.setState({ 
+            this.setState({
                 pantry: pantry,
                 pantryItem: ""
             }, () => {
@@ -330,6 +411,9 @@ class App extends React.Component {
         }, () => {
             this.checkFavorites();
             this.pushProfile();
+            if (window.location.pathname === "/favorites") {
+                this.pullFavorites();
+            }
         });
     }
     pushProfile = () => {
@@ -337,11 +421,18 @@ class App extends React.Component {
             favorites: [...this.state.favorites],
             pantry: [...this.state.pantry]
         }
-        axios.post(`${window.location.origin}/api/profile`, profile, { headers: { Authorization: `Bearer ${this.state.token}` }}).then(results => {
+        axios.post(`${window.location.origin}/api/profile`, profile, { headers: { Authorization: `Bearer ${this.state.token}` } }).then(results => {
 
         }).catch(error => {
             console.log(error)
         })
+    }
+    pullFavorites = () => {
+        axios.post(`${window.location.origin}/api/recipes/external`, { ids: this.state.favorites }).then(results => {
+            this.setState({ favoriteRecipes: results.data }, this.checkFavorites);
+        }).catch(error => {
+            console.log(error);
+        });
     }
     render() {
         if (this.props.isMobile && this.navLinks[1].path === "/pantry") {
@@ -357,15 +448,15 @@ class App extends React.Component {
             display: 'grid',
             gridTemplateRows: this.props.isMobile ? "auto" : '50px 1fr 60px',
             gridTemplateColumns: this.props.isMobile ? "auto" : '300px 1fr',
-            gridTemplateAreas: this.props.isMobile ? 
-            `
+            gridTemplateAreas: this.props.isMobile ?
+                `
                 'toolbar'
                 'sidebar'
                 'content'
                 'footer'
             `
-            : 
-            `
+                :
+                `
                 'toolbar toolbar'
                 'sidebar content'
                 'footer footer'
@@ -383,13 +474,13 @@ class App extends React.Component {
                 display: "grid",
                 gridTemplateColumns: this.props.isMobile ? "1fr" : "1fr 1fr",
                 gridTemplateRows: "auto",
-                gridTemplateAreas: this.props.isMobile ? 
-                `
+                gridTemplateAreas: this.props.isMobile ?
+                    `
                     'grocery'
                     'button'
                 `
-                :
-                `
+                    :
+                    `
                     'pantry grocery'
                     'button button'
                 `,
@@ -462,7 +553,13 @@ class App extends React.Component {
                 generateGroceryList: this.generateGroceryList,
                 location: this.state.location,
                 handleSelectRecipe: this.handleSelectRecipe,
-                handleFavoriteUnfavorite: this.handleFavoriteUnfavorite
+                handleFavoriteUnfavorite: this.handleFavoriteUnfavorite,
+                handleInputChange: this.handleInputChange,
+                handleSubmitButton: this.handleSearchButton,
+                nextPage: this.handleNextPage,
+                previousPage: this.handlePreviousPage,
+                state: this.state.searchStates,
+                search: this.state.search
             },
             pantry: {
                 isMobile: this.props.isMobile,
@@ -474,9 +571,10 @@ class App extends React.Component {
                 isLoggedIn: this.state.isLoggedIn
             },
             favorites: {
-                favorites: this.state.favorites,
                 isMobile: this.props.isMobile,
-                handleFavoriteUnfavorite: this.handleFavoriteUnfavorite
+                handleFavoriteUnfavorite: this.handleFavoriteUnfavorite,
+                recipes: this.state.favoriteRecipes,
+                pullFavorites: this.pullFavorites,
             }
         }
         return (
