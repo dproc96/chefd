@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require("../models");
-const auth = require('../middleware/auth')
+const auth = require('../middleware/auth');
+const bcrypt = require("bcryptjs");
 
 module.exports = app => {
  
@@ -27,10 +28,15 @@ module.exports = app => {
  app.post('/users/login', async (req, res) => {
     try{
       const user = await db.User.findOne({email: req.body.email}).populate("profile")
-      const token = await user.generateAuthToken()
-      console.log(token)
-
-      res.status(200).send({user,token});
+      const isMatch = await bcrypt.compareSync(req.body.password, user.password)
+      if (isMatch) {
+        const token = await user.generateAuthToken()
+        console.log(token)
+        res.status(200).send({user,token});
+      }
+      else {
+        res.status(401).json({message: "Password is incorrect"})
+      }
     }catch(e){
       console.log(e)
       res.status(400).send(e)
@@ -59,6 +65,23 @@ module.exports = app => {
     //user profile
     res.send(req.user)
   })
+
+  app.patch("/users/", auth, async (request, response) => {
+    try {
+      db.User.updateOne({_id: request.user._id}, request.body, (error, data) => {
+        if (data.n === 0) {
+          response.status(404).json({ message: "User not found, try again later" });
+        }
+        db.User.findById(request.user._id, (error, user) => {
+          response.json(user);
+        })
+      })
+    }
+    catch (e) {
+      response.status(503).json({ message: "Unknown error occurred, try again later" });
+    }
+  })
+
  
 
 
