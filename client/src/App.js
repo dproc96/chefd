@@ -360,7 +360,14 @@ class App extends React.Component {
         if (this.state.choosing) {
             const recipes = [...this.state.recipes];
             recipes[this.state.choosing] = recipe;
-            this.setState({ recipes: recipes })
+            this.setState({ 
+                recipes: recipes,
+                searchStates: {
+                    ...this.state.searchStates,
+                    recipes: [],
+                    currPage: null
+                }
+            })
         }
     }
     handleAddItemToPantry = () => {
@@ -556,6 +563,7 @@ class App extends React.Component {
                 handleFavoriteUnfavorite: this.handleFavoriteUnfavorite,
                 handleInputChange: this.handleInputChange,
                 handleSubmitButton: this.handleSearchButton,
+                handleLink: this.handleLink,
                 nextPage: this.handleNextPage,
                 previousPage: this.handlePreviousPage,
                 state: this.state.searchStates,

@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom'
 
 class RecipeCard extends Component {
   handleSelect = () => {
+    this.props.handleLink("/")
     this.props.handleSelectRecipe(this.props.recipe);
   }
   render() {
