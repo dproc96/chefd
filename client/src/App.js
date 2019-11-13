@@ -332,6 +332,7 @@ class App extends React.Component {
     }
     handleLogOut = () => {
         axios.post(window.location.origin + "/users/logout", {}, { headers: { Authorization: `Bearer ${this.state.token}` } }).then(results => {
+            localStorage.setItem("chefd-token", null);
             this.setState({
                 isLoggedIn: false,
                 name: null,
@@ -642,7 +643,8 @@ class App extends React.Component {
                 name: this.state.name,
                 handleInputChange: this.handleInputChange,
                 handleUpdateUser: this.handleUpdateUser,
-                error: this.state.error
+                error: this.state.error,
+                isLoggedIn: this.state.isLoggedIn
             }
         }
         return (
