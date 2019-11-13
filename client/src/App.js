@@ -369,10 +369,18 @@ class App extends React.Component {
         }
     }
     handleLink = path => {
-        this.setState({
+        const newState = {
             location: path,
-            dropdownOpen: false
-        })
+            dropdownOpen: false,
+        };
+        if (path !== "/favorites") {
+            newState.searchStates = {
+                ...this.state.searchStates,
+                currPage: null,
+                recipes: []
+            }
+        }
+        this.setState(newState)
     }
     handleSearchLink = event => {
         const index = event.target.value;
