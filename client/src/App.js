@@ -17,6 +17,7 @@ import withSizes from 'react-sizes';
 import Favorites from './pages/Favorites';
 import API from './utils/API.js';
 import paginate from 'paginate-array';
+import Account from './pages/Account';
 
 Modal.setAppElement('#root')
 
@@ -26,6 +27,8 @@ class App extends React.Component {
         this.state = {
             isLoggedIn: false,
             name: null,
+            emailEdit: null,
+            nameEdit: null,
             location: window.location.pathname,
             isGroceryListOpen: false,
             pantry: [],
@@ -296,18 +299,21 @@ class App extends React.Component {
         }
         if (info.email && info.email.match(/.+@.+\..+/) && info.password) {
             axios.post(window.location.origin + "/users/login", info).then(results => {
-                console.log(results)
-
                 this.setState({
                     isLoggedIn: true,
                     name: results.data.user.name,
+                    nameEdit: results.data.user.name,
+                    emailEdit: results.data.user.email,
                     token: results.data.token,
                     location: "/",
                     favorites: [...results.data.user.profile.favorites],
-                    pantry: [...results.data.user.profile.pantry]
+                    pantry: [...results.data.user.profile.pantry],
+                    error: null
                 })
             }).catch(error => {
-                console.log(error);
+                this.setState({
+                    error: error.response.data.message
+                });
             })
         }
     }
@@ -337,6 +343,8 @@ class App extends React.Component {
                 this.setState({
                     isLoggedIn: true,
                     name: results.data.user.name,
+                    nameEdit: results.data.user.name,
+                    emailEdit: results.data.user.email,
                     token: results.data.token,
                     favorites: results.data.profile.favorites,
                     pantry: results.data.profile.pantry
@@ -422,6 +430,26 @@ class App extends React.Component {
                 this.pullFavorites();
             }
         });
+    }
+    handleUpdateUser = () => {
+        const user = {
+            email: this.state.emailEdit,
+            name: this.state.nameEdit
+        }
+        if (this.state.passwordEdit && this.state.passwordEdit === this.state.passwordReenterEdit) {
+            user.password = this.state.passwordEdit;
+        }
+        axios.patch(window.location.origin + "/users/", user, { headers: { Authorization: `Bearer ${this.state.token}` } }).then(results => {
+            this.setState({
+                name: results.data.name
+            })
+            console.log(results)
+        }).catch(error => {
+            console.log(error)
+            this.setState({
+                error: error.response.data.message
+            });
+        })
     }
     pushProfile = () => {
         const profile = {
@@ -540,7 +568,8 @@ class App extends React.Component {
                 handleInputChange: this.handleInputChange,
                 handleLogIn: this.handleLogIn,
                 handleSignUp: this.handleSignUp,
-                isLoggedIn: this.state.isLoggedIn
+                isLoggedIn: this.state.isLoggedIn,
+                error: this.state.error
             },
             groceryList: {
                 isMobile: this.props.isMobile,
@@ -593,6 +622,14 @@ class App extends React.Component {
                 recipes: this.state.favoriteRecipes,
                 pullFavorites: this.pullFavorites,
                 isLoggedIn: this.state.isLoggedIn
+            },
+            account: {
+                emailEdit: this.state.emailEdit,
+                nameEdit: this.state.nameEdit,
+                name: this.state.name,
+                handleInputChange: this.handleInputChange,
+                handleUpdateUser: this.handleUpdateUser,
+                error: this.state.error
             }
         }
         return (
@@ -615,6 +652,9 @@ class App extends React.Component {
                         </Route>
                         <Route exact path="/favorites">
                             <Favorites {...props.favorites} />
+                        </Route>
+                        <Route exact path="/account">
+                            <Account {...props.account} />
                         </Route>
                     </Content>
                     <Footer />
