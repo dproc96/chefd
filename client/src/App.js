@@ -25,12 +25,12 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         const token = localStorage.getItem("chefd-token");
-        let name, email, pantry = [], favorites = [], isLoggedIn = false;
         if (token) {
             axios.get(window.location.origin + "/users/me", { headers: { Authorization: `Bearer ${token}` } }).then(results => {
                 this.setState({
                     name: results.data.name,
-                    email: results.data.email,
+                    emailEdit: results.data.email,
+                    nameEdit: results.data.name,
                     pantry: results.data.profile.pantry,
                     favorites: results.data.profile.favorites,
                     isLoggedIn: true
@@ -42,12 +42,8 @@ class App extends React.Component {
         this.state = {
             location: window.location.pathname,
             token: token,
-            name: name,
-            emailEdit: email,
-            nameEdit: name,
-            isLoggedIn: isLoggedIn,
             isGroceryListOpen: false,
-            pantry: pantry,
+            pantry: [],
             recipes: [],
             search: "",
             searchStates: {
@@ -59,7 +55,7 @@ class App extends React.Component {
                 currPage: null
             },
             favoriteRecipes: [],
-            favorites: favorites,
+            favorites: [],
             pantryItem: "",
             dropdownOpen: false
         };
