@@ -52,7 +52,6 @@ class RecipeCard extends Component {
       }
     };
     const starClass = this.props.recipe && this.props.recipe.isFavorite ? "fas" : "far"
-    console.log(this.props.location)
     return (   
       this.props.recipe ?
         <div {...props.card}>

@@ -24,14 +24,30 @@ Modal.setAppElement('#root')
 class App extends React.Component {
     constructor(props) {
         super(props);
+        const token = localStorage.getItem("chefd-token");
+        let name, email, pantry = [], favorites = [], isLoggedIn = false;
+        if (token) {
+            axios.get(window.location.origin + "/users/me", { headers: { Authorization: `Bearer ${token}` } }).then(results => {
+                this.setState({
+                    name: results.data.name,
+                    email: results.data.email,
+                    pantry: results.data.profile.pantry,
+                    favorites: results.data.profile.favorites,
+                    isLoggedIn: true
+                })
+            }).catch(error => {
+                console.log(error)
+            })
+        }
         this.state = {
-            isLoggedIn: false,
-            name: null,
-            emailEdit: null,
-            nameEdit: null,
             location: window.location.pathname,
+            token: token,
+            name: name,
+            emailEdit: email,
+            nameEdit: name,
+            isLoggedIn: isLoggedIn,
             isGroceryListOpen: false,
-            pantry: [],
+            pantry: pantry,
             recipes: [],
             search: "",
             searchStates: {
@@ -43,7 +59,7 @@ class App extends React.Component {
                 currPage: null
             },
             favoriteRecipes: [],
-            favorites: [],
+            favorites: favorites,
             pantryItem: "",
             dropdownOpen: false
         };
@@ -299,6 +315,7 @@ class App extends React.Component {
         }
         if (info.email && info.email.match(/.+@.+\..+/) && info.password) {
             axios.post(window.location.origin + "/users/login", info).then(results => {
+                localStorage.setItem("chefd-token", results.data.token);
                 this.setState({
                     isLoggedIn: true,
                     name: results.data.user.name,
