@@ -8,7 +8,7 @@ class SearchRecipes extends Component {
     const { currPage } = this.props.state;
     return (
       <div style={{ textAlign: "center" }} className="SearchReipes">
-        <SearchForm handleInputChange={this.props.handleInputChange} handleSubmitButton={this.props.handleSubmitButton} />
+        <SearchForm handleInputChange={this.props.handleInputChange} handleSubmitButton={this.props.handleSubmitButton} pullFavorites={this.props.pullFavorites} />
         {currPage && 
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
             {currPage.data.map(recipe => {

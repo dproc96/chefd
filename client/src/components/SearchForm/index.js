@@ -8,6 +8,7 @@ function SearchForm(props) {
       <input type="text" name="search" className="form-control" placeholder="Search recipes by title" onChange={props.handleInputChange} />
       <div className="input-group-append" >
         <button className="btn btn-outline-secondary" type="button" onClick={props.handleSubmitButton}>Search</button>
+        <button onClick={props.pullFavorites}>Favorites</button>
       </div>
     </div>
   );

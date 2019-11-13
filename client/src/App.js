@@ -179,7 +179,7 @@ class App extends React.Component {
             .catch(err => console.log(err));
     };
     handlePreviousPage = () => {
-        const { page, size, recipes } = this.state;
+        const { page, size, recipes } = this.state.searchStates;
 
         if (page > 1) {
             const newPage = page - 1;
@@ -195,7 +195,7 @@ class App extends React.Component {
         }
     }
     handleNextPage = () => {
-        const { currPage, page, size, recipes } = this.state;
+        const { currPage, page, size, recipes } = this.state.searchStates;
         if (page < currPage.totalPages) {
             const newPage = page + 1;
             const newCurrPage = paginate(recipes, newPage, size);
@@ -436,7 +436,15 @@ class App extends React.Component {
     }
     pullFavorites = () => {
         axios.post(`${window.location.origin}/api/recipes/external`, { ids: this.state.favorites }).then(results => {
-            this.setState({ favoriteRecipes: results.data }, this.checkProfile);
+            const currPage = paginate(results.data, 1, 7);
+            this.setState({ 
+                favoriteRecipes: results.data,
+                searchStates: {
+                    ...this.state.searchStates,
+                    currPage: currPage,
+                    recipes: results.data
+                }
+            }, this.checkProfile);
         }).catch(error => {
             console.log(error);
         });
@@ -567,7 +575,8 @@ class App extends React.Component {
                 nextPage: this.handleNextPage,
                 previousPage: this.handlePreviousPage,
                 state: this.state.searchStates,
-                search: this.state.search
+                search: this.state.search,
+                pullFavorites: this.pullFavorites
             },
             pantry: {
                 isMobile: this.props.isMobile,
