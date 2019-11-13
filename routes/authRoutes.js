@@ -16,7 +16,7 @@ module.exports = app => {
       await user.save();
       await profile.save();
       const token = await user.generateAuthToken();
-      return res.status(201).send({user,token})
+      return res.status(201).send({user,profile,token})
 
     } catch (e) {
       console.log(e)

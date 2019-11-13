@@ -338,8 +338,8 @@ class App extends React.Component {
                     isLoggedIn: true,
                     name: results.data.user.name,
                     token: results.data.token,
-                    favorites: results.data.user.profile.favorites,
-                    pantry: results.data.user.profile.pantry
+                    favorites: results.data.profile.favorites,
+                    pantry: results.data.profile.pantry
                 })
             }).catch(error => {
                 console.log(error)
@@ -429,7 +429,7 @@ class App extends React.Component {
     }
     pullFavorites = () => {
         axios.post(`${window.location.origin}/api/recipes/external`, { ids: this.state.favorites }).then(results => {
-            this.setState({ favoriteRecipes: results.data }, this.checkFavorites);
+            this.setState({ favoriteRecipes: results.data }, this.checkProfile);
         }).catch(error => {
             console.log(error);
         });
@@ -575,6 +575,7 @@ class App extends React.Component {
                 handleFavoriteUnfavorite: this.handleFavoriteUnfavorite,
                 recipes: this.state.favoriteRecipes,
                 pullFavorites: this.pullFavorites,
+                isLoggedIn: this.state.isLoggedIn
             }
         }
         return (

@@ -13,11 +13,16 @@ class Favorites extends React.Component {
       justifyContent: "center"
     };
     return (
-      <div style={style}>
-        {this.props.recipes.map(recipe => {
-          return <RecipeCard handleFavoriteUnfavorite={this.props.handleFavoriteUnfavorite} isMobile={this.props.isMobile} recipe={recipe} />
-        })}
-      </div>
+      this.props.isLoggedIn ?
+        <div style={style}>
+          {this.props.recipes.map(recipe => {
+            return <RecipeCard handleFavoriteUnfavorite={this.props.handleFavoriteUnfavorite} isMobile={this.props.isMobile} recipe={recipe} />
+          })}
+        </div>
+        :
+        <div style={style}>
+          <h4 style={{ alignSelf: "center" }}>You Must Be Logged In To Access This Page</h4>
+        </div>
     );
   }
 }
