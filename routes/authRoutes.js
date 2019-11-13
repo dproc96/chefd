@@ -58,12 +58,15 @@ module.exports = app => {
     }
   })
 
-  
-
   //this is the user's profile
   app.get('/users/me', auth, async (req, res) => {
     //user profile
-    res.send(req.user)
+    db.User.findOne({_id: req.user._id}).populate("profile").then(data => {
+      res.json(data);
+    }).catch(error => {
+      console.log(error)
+      res.status(503).end()
+    })
   })
 
   app.patch("/users/", auth, async (request, response) => {
