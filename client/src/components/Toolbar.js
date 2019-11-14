@@ -2,12 +2,14 @@ import React from "react";
 import AccountButton from "./AccountButton";
 import Logo from "./Logo";
 import theme from "../theme";
+import Color from "color";
 
 class Toolbar extends React.Component {
   render() {
     const style = {
       gridArea: "toolbar",
-      backgroundColor: theme.darkRed,
+      // backgroundColor: theme.darkRed,
+      backgroundImage: `linear-gradient(to bottom, ${theme.darkRed}, ${Color(theme.darkRed).lighten(0.1)})`,
       zIndex: 2,
       borderBottom: "1px #777777 solid",
       display: "flex",

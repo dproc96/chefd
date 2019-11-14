@@ -1,8 +1,8 @@
 .RecipeCard{
   padding: 10px;
   margin: 20px 10px;
-  box-shadow:7px 10px 12px -5px rgba(0,0,0,0.56);
-  border-radius: 5px;
+  box-shadow: 1px 1px 5px 5px rgba(16,117,179,0.2);
+  border-radius: 15px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -16,11 +16,5 @@
    object-fit: cover;
    object-position: center;
    transition: all ease 500ms
-
-}
-
-.RecipeCard>img:hover{
-transform:scale(1.04);
-opacity:0.8;
 
 }

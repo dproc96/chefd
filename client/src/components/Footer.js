@@ -4,7 +4,7 @@ import theme from "../theme";
 class Footer extends React.Component {
   render() {
     const style = {
-      backgroundColor: theme.blue,
+      backgroundColor: theme.darkBlue,
       gridArea: "footer",
       zIndex: 2,
       display: "flex",

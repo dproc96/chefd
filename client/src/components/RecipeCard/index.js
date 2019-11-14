@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import './RecipeCard.css';
 import theme from '../../theme';
 import {Link} from 'react-router-dom';
-import Fade from 'react-reveal'
+import Fade from 'react-reveal';
+import Color from 'color';
 
 class RecipeCard extends Component {
   handleSelect = () => {
@@ -11,7 +12,7 @@ class RecipeCard extends Component {
   }
   render() {
     const style = {
-      backgroundColor: theme.blueTranslucent,
+      backgroundImage: `linear-gradient(to bottom right, ${Color(theme.red).mix(Color(theme.blue)).lighten(0.3)}, ${Color(theme.darkBlue)})`,
       width: this.props.isMobile ? "80%" : 200
     };
     const props = {
@@ -54,7 +55,7 @@ class RecipeCard extends Component {
     };
     const starClass = this.props.recipe && this.props.recipe.isFavorite ? "fas" : "far"
     return (
-      <Fade>
+      <Fade top>
       {this.props.recipe ?
         <div {...props.card}>
           <div style={{display: "flex", justifyContent: "space-between", width: "100%"}}>
