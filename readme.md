@@ -20,8 +20,9 @@ What makes this app different from other apps: ??
        * Used Node and Mongoose to create, query, update and delete routed data in the app.
        * Used bcryptjs npm package to hash passwords.
        * Used Json WebTokens for user authentication.
-       * Used Serious Eats API to scrape Recipies.
+       * Used cheerio and axios to scrape recipes from Serious Eats.
        * Used eslint for linting which analyse the code for potential errors.
+       * Used GSAP to design animations
        * Used Travis-CI for Continuous Integration (CI) which automate the build and testing of code
           every time a team member commits changes to version control.
     
