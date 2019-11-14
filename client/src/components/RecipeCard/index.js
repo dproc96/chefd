@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './RecipeCard.css';
 import theme from '../../theme';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import Fade from 'react-reveal'
 
 class RecipeCard extends Component {
   handleSelect = () => {
@@ -52,8 +53,9 @@ class RecipeCard extends Component {
       }
     };
     const starClass = this.props.recipe && this.props.recipe.isFavorite ? "fas" : "far"
-    return (   
-      this.props.recipe ?
+    return (
+      <Fade>
+      {this.props.recipe ?
         <div {...props.card}>
           <div style={{display: "flex", justifyContent: "space-between", width: "100%"}}>
             <i onClick={this.props.handleFavoriteUnfavorite} id={this.props.recipe._id} className={starClass + " fa-star"}></i>
@@ -87,7 +89,8 @@ class RecipeCard extends Component {
         <div onDragEnd={this.props.handleDragEnd} onDragOver={this.props.handleDragOver} onDragStart={this.props.handleDragCardStart} id={this.props.value} draggable style={style} className="RecipeCard">
           <h4>{this.props.day} -- You have blocked off this day</h4>
           <button onClick={this.props.handleReshuffle} value={this.props.value}>Unblock</button>
-        </div>
+        </div>}
+      </Fade>   
     );
   }
 

@@ -3,6 +3,7 @@ import LogInCard from "../components/LogInCard";
 import SignUpCard from "../components/SignUpCard";
 import theme from "../theme";
 import { Redirect } from "react-router-dom";
+import Fade from 'react-reveal';
 
 class LogIn extends React.Component {
   render() {
@@ -23,8 +24,10 @@ class LogIn extends React.Component {
     };
     return (
       <div style={style}>
-        <LogInCard cardStyle={cardStyle} {...this.props} />
-        <SignUpCard cardStyle={cardStyle} {...this.props} />
+        <Fade right>
+          <LogInCard cardStyle={cardStyle} {...this.props} />
+          <SignUpCard cardStyle={cardStyle} {...this.props} />
+        </Fade>
         {this.props.isLoggedIn && <Redirect to="/" />}
       </div>
     );

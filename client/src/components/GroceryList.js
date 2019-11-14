@@ -1,5 +1,6 @@
 import React from "react";
 import GroceryCheckbox from "./GroceryCheckbox";
+import { Fade } from "react-reveal";
 
 class GroceryList extends React.Component {
   render() {
@@ -32,9 +33,11 @@ class GroceryList extends React.Component {
     return (
       <div>
         <h3>Grocery List</h3>
-        <ul style={style}>
-          {groceryList}
-        </ul>
+        <Fade bottom cascade>
+          <ul style={style}>
+            {groceryList}
+          </ul>
+        </Fade>
       </div>
     );
   }
