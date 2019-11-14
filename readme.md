@@ -12,7 +12,7 @@ What makes this app different from other apps: ??
 
 ## Overview
 
- *  A user is able to not only find recipies but plan what he wants to eat for the week 	  
+ *  A user is able to not only find recipes but plan what he wants to eat for the week 	  
     
  *  The app is developed as a full-stack web application created with MongoDb, Express.js, React, Node  
  
