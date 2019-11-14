@@ -3,7 +3,7 @@ import LogInCard from "../components/LogInCard";
 import SignUpCard from "../components/SignUpCard";
 import theme from "../theme";
 import { Redirect } from "react-router-dom";
-import Fade from 'react-reveal';
+import Fade from "react-reveal";
 import Color from "color";
 
 class LogIn extends React.Component {
@@ -12,7 +12,6 @@ class LogIn extends React.Component {
       width: this.props.isMobile ? "80%" : 400,
       padding: 20,
       height: "max-content",
-      // backgroundColor: theme.blue,
       backgroundImage: `linear-gradient(to bottom right, ${Color(theme.red).mix(Color(theme.blue)).lighten(0.3)}, ${Color(theme.darkBlue)})`,
       margin: "30px 0px",
       borderRadius: "15px",

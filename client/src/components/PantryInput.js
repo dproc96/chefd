@@ -5,7 +5,6 @@ import Color from "color";
 class PantryInput extends React.Component {
   render() {
     const style = {
-      // backgroundColor: theme.blueTranslucent,
       backgroundImage: `linear-gradient(to bottom right, ${Color(theme.red).mix(Color(theme.blue)).lighten(0.3)}, ${Color(theme.darkBlue)})`,
       width: this.props.isMobile ? "80%" : 300,
       padding: 10,

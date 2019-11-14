@@ -12,6 +12,7 @@ class Pantry extends React.Component {
       alignItems: "flex-start",
       padding: 20
     };
+    
     return (
       this.props.isLoggedIn ?
         <div style={style}>

@@ -1,7 +1,7 @@
-import React from 'react';
-import theme from '../theme';
+import React from "react";
+import theme from "../theme";
 import Color from "color";
-import { Fade } from 'react-reveal';
+import { Fade } from "react-reveal";
 
 class Account extends React.Component {
   render() {
@@ -38,7 +38,7 @@ class Account extends React.Component {
         <div style={{ display: "flex", justifyContent: "center" }}>
           <h4 style={{ alignSelf: "center" }}>You Must Be Logged In To Access This Page</h4>
         </div>
-    )
+    );
   }
 }
 

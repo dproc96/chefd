@@ -11,15 +11,15 @@ class SearchRecipes extends Component {
         <SearchForm handleInputChange={this.props.handleInputChange} handleSubmitButton={this.props.handleSubmitButton} pullFavorites={this.props.pullFavorites} />
         {currPage && 
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
-            {currPage.data.map(recipe => {
-              return <RecipeCard {...this.props} recipe={recipe} />
+            {currPage.data.map((recipe, i) => {
+              return <RecipeCard value={i} {...this.props} recipe={recipe} />
             })}
           </div>
         }
         {this.props.state.currPage ? (
           <div>
-            <button style={{ width: "100px" }} onClick={this.props.previousPage}>Previous Page</button>
-            <button style={{ width: "100px" }} onClick={this.props.nextPage}>Next Page</button>
+            <button style={{ width: "100px" }} onClick={this.props.previousPage}>Previous</button>
+            <button style={{ width: "100px" }} onClick={this.props.nextPage}>Next</button>
           </div>
         ): (
           <h3>No Results to Display</h3>
