@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import recipes from "./fakerecipes.json";
 import RecipeCard from "../RecipeCard";
 import "./RecipeCardList.css";
 
@@ -25,7 +24,6 @@ class RecipeCardList extends Component{
           };
           return <RecipeCard {...props} value={i} key={i} />;
         })}
-        <button style={{width: "40%"}} onClick={this.props.generateGroceryList}>Generate Grocery List</button>
       </div>
     );
   }

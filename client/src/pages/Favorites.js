@@ -15,8 +15,8 @@ class Favorites extends React.Component {
     return (
       this.props.isLoggedIn ?
         <div style={style}>
-          {this.props.recipes.map(recipe => {
-            return <RecipeCard handleFavoriteUnfavorite={this.props.handleFavoriteUnfavorite} isMobile={this.props.isMobile} recipe={recipe} />
+          {this.props.recipes.map((recipe, i) => {
+            return <RecipeCard value={i} handleFavoriteUnfavorite={this.props.handleFavoriteUnfavorite} isMobile={this.props.isMobile} recipe={recipe} />
           })}
         </div>
         :

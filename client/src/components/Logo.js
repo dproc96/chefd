@@ -18,7 +18,7 @@ class Logo extends React.Component {
     return (
       <div style={style}>
         <h3 style={h3}>Chef'd Meal Planner</h3>
-        <img alt="Logo" style={{ width: 30 }} src="/images/chefd-logo.png" />
+        {!this.props.isMobile && <img alt="Logo" style={{ width: 30 }} src="/images/chefd-logo.png" />}
       </div>
     )
   }

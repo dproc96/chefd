@@ -652,7 +652,8 @@ class App extends React.Component {
                 handleInputChange: this.handleInputChange,
                 handleUpdateUser: this.handleUpdateUser,
                 error: this.state.error,
-                isLoggedIn: this.state.isLoggedIn
+                isLoggedIn: this.state.isLoggedIn,
+                isMobile: this.props.isMobile
             }
         }
         return (

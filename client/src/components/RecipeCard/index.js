@@ -1,17 +1,60 @@
 import React, { Component } from 'react';
 import './RecipeCard.css';
 import theme from '../../theme';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+// import Fade from 'react-reveal';
+import Color from 'color';
+// import { Scene } from "react-scenejs";
+import { TimelineLite } from "gsap";
 
 class RecipeCard extends Component {
   handleSelect = () => {
     this.props.handleLink("/")
     this.props.handleSelectRecipe(this.props.recipe);
   }
+  tween = new TimelineLite({ paused: true });
+  element = null
+  componentDidUpdate(prevProps) {
+    if (this.props.recipe && (!prevProps.recipe || prevProps.recipe.title !== this.props.recipe.title)) {
+      this.tween.fromTo(this.element,{
+        css: {
+          opacity: 0,
+          scale: 0.7
+        }
+      }, {
+        delay: 0.3,
+        ease: "elastic",
+        css: {
+          visibility: "visible",
+          scale: 1,
+          opacity: 1
+        },
+        duration: 0.7,
+      }).play()
+    }
+  }
+  componentDidMount() {
+    this.tween.fromTo(this.element, {
+      css: {
+        opacity: 0,
+        scale: 0.7
+      }
+    }, {
+        delay: 0.1 + this.props.value * 0.1,
+        ease: "elastic",
+        css: {
+          visibility: "visible",
+          scale: 1,
+          opacity: 1
+        },
+        duration: 0.7,
+      }).play()
+  }
   render() {
     const style = {
-      backgroundColor: theme.blueTranslucent,
-      width: this.props.isMobile ? "80%" : 200
+      backgroundImage: `linear-gradient(to bottom , ${Color(theme.darkBlue).lighten(0.1)} 65%, ${Color(theme.yellow).lighten(0.1)})`,
+      width: this.props.isMobile ? "80%" : 200,
+      visibility: "hidden"
     };
     const props = {
       card: {
@@ -21,7 +64,8 @@ class RecipeCard extends Component {
         id: this.props.value,
         draggable: true,
         style: style,
-        className: "RecipeCard"
+        className: "RecipeCard",
+        ref: div => this.element = div
       },
       img: {
         onDragEnter: this.props.handleDragOver,
@@ -52,7 +96,7 @@ class RecipeCard extends Component {
       }
     };
     const starClass = this.props.recipe && this.props.recipe.isFavorite ? "fas" : "far"
-    return (   
+    return (
       this.props.recipe ?
         <div {...props.card}>
           <div style={{display: "flex", justifyContent: "space-between", width: "100%"}}>
