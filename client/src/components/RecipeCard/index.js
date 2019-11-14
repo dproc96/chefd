@@ -22,7 +22,7 @@ class RecipeCard extends Component {
           scale: 0.7
         }
       }, {
-        delay: 0.2,
+        delay: 0.3,
         ease: "elastic",
         css: {
           visibility: "visible",

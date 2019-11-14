@@ -39,9 +39,7 @@
     "react-modal": "^3.11.1",
     "react-reveal": "^1.2.2",
     "react-router-dom": "^5.1.2",
-    "react-scenejs": "^1.1.0",
     "react-sizes": "^2.0.0",
     "recipe-ingredient-parser-v2": "^1.1.1",
-    "scenejs": "^1.1.5"
   }
 }
