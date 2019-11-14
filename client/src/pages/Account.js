@@ -1,9 +1,29 @@
 import React from "react";
 import theme from "../theme";
 import Color from "color";
-import { Fade } from "react-reveal";
+import { TimelineLite } from "gsap";
+
 
 class Account extends React.Component {
+  element = null;
+  tween = new TimelineLite({ paused: true })
+  componentDidMount() {
+    this.tween.fromTo(this.element, {
+      css: {
+        opacity: 0,
+        scale: 0.7
+      }
+    }, {
+        delay: 0.2,
+        ease: "elastic",
+        css: {
+          visibility: "visible",
+          scale: 1,
+          opacity: 1
+        },
+        duration: 0.7,
+      }).play()
+  }
   render() {
     const style = {
       backgroundImage: `linear-gradient(to bottom right, ${Color(theme.red).mix(Color(theme.blue)).lighten(0.3)}, ${Color(theme.darkBlue)})`,
@@ -14,13 +34,14 @@ class Account extends React.Component {
       borderRadius: 15,
       display: "flex",
       flexDirection: "column",
-      alignItems: "center"
+      alignItems: "center",
+      visibility: "hidden"
     };
     return (
       this.props.isLoggedIn ?
-        <Fade right>
+        // <Fade right>
           <div style={{display: "flex", justifyContent: "center"}}>
-            <div style={style}>
+            <div ref={div => {this.element = div}} style={style}>
               <h3>{this.props.name}'s Account</h3>
               <h5>Email:</h5>
               <input name="emailEdit" onChange={this.props.handleInputChange} value={this.props.emailEdit} />
@@ -33,7 +54,7 @@ class Account extends React.Component {
               <button onClick={this.props.handleUpdateUser}>Update Account</button>
             </div>
           </div>
-        </Fade>
+        // </Fade>
         :
         <div style={{ display: "flex", justifyContent: "center" }}>
           <h4 style={{ alignSelf: "center" }}>You Must Be Logged In To Access This Page</h4>

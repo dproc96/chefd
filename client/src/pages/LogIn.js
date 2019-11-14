@@ -3,7 +3,6 @@ import LogInCard from "../components/LogInCard";
 import SignUpCard from "../components/SignUpCard";
 import theme from "../theme";
 import { Redirect } from "react-router-dom";
-import Fade from "react-reveal";
 import Color from "color";
 
 class LogIn extends React.Component {
@@ -17,6 +16,7 @@ class LogIn extends React.Component {
       borderRadius: "15px",
       textAlign: "center",
       boxShadow: "2px 2px 3px 3px rgba(0,0,0,0.3)",
+      visibility: "hidden"
     };
     const style = {
       display: "flex",
@@ -25,10 +25,10 @@ class LogIn extends React.Component {
     };
     return (
       <div style={style}>
-        <Fade right>
+        {/* <Fade right> */}
           <LogInCard cardStyle={cardStyle} {...this.props} />
           <SignUpCard cardStyle={cardStyle} {...this.props} />
-        </Fade>
+        {/* </Fade> */}
         {this.props.isLoggedIn && <Redirect to="/" />}
       </div>
     );
