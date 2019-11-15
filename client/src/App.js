@@ -18,12 +18,14 @@ import Favorites from './pages/Favorites';
 import API from './utils/API.js';
 import paginate from 'paginate-array';
 import Account from './pages/Account';
+import gsap from "gsap";
 
 Modal.setAppElement('#root')
 
 class App extends React.Component {
     constructor(props) {
         super(props);
+        gsap.registerPlugin();
         const token = localStorage.getItem("chefd-token");
         if (token) {
             axios.get(window.location.origin + "/users/me", { headers: { Authorization: `Bearer ${token}` } }).then(results => {
