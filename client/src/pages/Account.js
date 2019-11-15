@@ -8,25 +8,27 @@ class Account extends React.Component {
   element = null;
   tween = new TimelineLite({ paused: true })
   componentDidMount() {
-    this.tween.fromTo(this.element, {
-      css: {
-        opacity: 0,
-        scale: 0.7
-      }
-    }, {
-        delay: 0.2,
-        ease: "elastic",
+    if (this.props.name) {
+      this.tween.fromTo(this.element, {
         css: {
-          visibility: "visible",
-          scale: 1,
-          opacity: 1
-        },
-        duration: 0.7,
-      }).play()
+          opacity: 0,
+          scale: 0.7
+        }
+      }, {
+          delay: 0.2,
+          ease: "elastic",
+          css: {
+            visibility: "visible",
+            scale: 1,
+            opacity: 1
+          },
+          duration: 0.7,
+        }).play()
+    }
   }
   render() {
     const style = {
-      backgroundImage: `linear-gradient(to bottom right, ${Color(theme.red).mix(Color(theme.blue)).lighten(0.3)}, ${Color(theme.darkBlue)})`,
+      backgroundImage: `linear-gradient(to bottom , ${Color(theme.darkBlue).lighten(0.1)} 55%, ${Color(theme.yellow).lighten(0.1)})`,
       width: this.props.isMobile ? "80%" : 300,
       minHeight: 100,
       padding: 15,
@@ -35,7 +37,8 @@ class Account extends React.Component {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      visibility: "hidden"
+      visibility: "hidden",
+      boxShadow: "1px 1px 5px 5px rgba(16,117,179,0.2)"
     };
     return (
       this.props.isLoggedIn ?
