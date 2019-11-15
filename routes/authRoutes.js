@@ -71,6 +71,9 @@ module.exports = app => {
 
   app.patch("/users/", auth, async (request, response) => {
     try {
+      if (request.body.password) {
+        request.body.password = await bcrypt.hash(request.body.password, 8)
+      }
       db.User.updateOne({_id: request.user._id}, request.body, (error, data) => {
         if (data.n === 0) {
           response.status(404).json({ message: "User not found, try again later" });
