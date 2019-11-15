@@ -55,7 +55,19 @@ Chef'd app can be installed as follows
       *  authRoutes.js: Authenticate a user to register, login, logout   
          Use bcryptjs to compare password sent with the hash stored in the database.
 
- 
+Sample screenshots
+<img src="./images/MainPage.JPG" alt="Main Page"/>
+
+<img src="./images/register-login.JPG" alt="register-login Page"/>
+
+<img src="./images/MyAccount.JPG" alt="My Account Page"/>
+
+<img src="./images/Favourites.JPG" alt="Favourites Page"/>
+
+<img src="./images/EditPantry.JPG" alt="Edit Pantry Page"/>
+
+<img src="./images/mobile.JPG" alt="Edit Pantry Page"/>
+
   
 ### Contributors
    ##### Dan Proctor
