@@ -8,7 +8,7 @@ Who is this app for: Anyone who wants to make use of what they have in their pan
 
 Why would someone use this app: Use what you have in your pantry, Spend less, Save
 
-What makes this app different from other apps: ??
+What makes this app different from other apps: It is free, Uses Pantry data, Recipies from Serious Eats which has lot of recipies of difference cuisine
 
 ## Overview
 
@@ -56,22 +56,23 @@ Chef'd app can be installed as follows
          Use bcryptjs to compare password sent with the hash stored in the database.
 
 Sample screenshots
-<img src="./images/MainPage.JPG" alt="Main Page"/>
+<img src="./images/MainPage.JPG" alt="Main Page"/> <br>
 
-<img src="./images/register-login.JPG" alt="register-login Page"/>
+<img src="./images/register-login.JPG" alt="register-login Page"/> <br>
 
-<img src="./images/MyAccount.JPG" alt="My Account Page"/>
+<img src="./images/MyAccount.JPG" alt="My Account Page"/> <br>
 
-<img src="./images/Favourites.JPG" alt="Favourites Page"/>
+<img src="./images/Favourites.JPG" alt="Favourites Page"/> <br>
 
-<img src="./images/EditPantry.JPG" alt="Edit Pantry Page"/>
+<img src="./images/EditPantry.JPG" alt="Edit Pantry Page"/> <br>
 
-<img src="./images/mobile.JPG" alt="Edit Pantry Page"/>
+<img src="./images/mobile.png" alt="Mobile Page"/>
+
 
   
 ### Contributors
-   ##### Dan Proctor
-   ##### Rizwan Renesa
-   ##### Giri Rao
+   #### Dan Proctor
+   #### Rizwan Renesa
+   #### Giri Rao
   
  
