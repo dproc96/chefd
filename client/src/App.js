@@ -355,7 +355,7 @@ class App extends React.Component {
         if (info.email && info.email.match(/.+@.+\..+/) && info.password && info.name && info.password === info.passwordReenter) {
             delete info.passwordReenter;
             axios.post(window.location.origin + "/users/register", info).then(results => {
-                console.log(results)
+                localStorage.setItem("chefd-token", results.data.token);
                 this.setState({
                     isLoggedIn: true,
                     name: results.data.user.name,
