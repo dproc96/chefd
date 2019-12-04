@@ -277,27 +277,30 @@ class App extends React.Component {
     handleDragCardStart = event => {
         this.setState({
             dragging: event.target.id,
-            draggedOver: event.target.id
+            draggedOver: event.target.id,
+            checkDrag: true
         });
     }
     handleDragOver = event => {
         if (this.state.dragging) {
-            if (event.target.id) {
-                this.setState({ draggedOver: event.target.id })
+            if (event.target.id && this.state.checkDrag) {
+                this.setState({ draggedOver: event.target.id, checkDrag: false }, () => {
+                    const recipes = [...this.state.recipes];
+                    const dragging = this.state.dragging;
+                    const draggedOver = this.state.draggedOver;
+                    const temp = recipes[dragging];
+                    recipes[dragging] = recipes[draggedOver];
+                    recipes[draggedOver] = temp;
+                    this.setState({
+                        recipes: recipes,
+                        dragging: draggedOver,
+                        checkDrag: true
+                    })
+                })
             }
             else {
                 this.setState({ draggedOver: this.state.dragging })
             }
-            const recipes = [...this.state.recipes];
-            const dragging = this.state.dragging;
-            const draggedOver = this.state.draggedOver;
-            const temp = recipes[dragging];
-            recipes[dragging] = recipes[draggedOver];
-            recipes[draggedOver] = temp;
-            this.setState({
-                recipes: recipes,
-                dragging: draggedOver
-            })
         }
     }
     handleDragEnd = event => {
