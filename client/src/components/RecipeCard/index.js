@@ -15,7 +15,7 @@ class RecipeCard extends Component {
   tween = new TimelineLite({ paused: true });
   element = null
   componentDidUpdate(prevProps) {
-    if (this.props.recipe && (!prevProps.recipe || prevProps.recipe.title !== this.props.recipe.title)) {
+    if (this.props.recipe && (!prevProps.recipe || prevProps.recipe._id !== this.props.recipe._id)) {
       this.tween.fromTo(this.element,{
         css: {
           opacity: 0,
