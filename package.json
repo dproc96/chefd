@@ -28,7 +28,7 @@
     "eslint-plugin-import": "^2.18.2",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
-    "gsap": "^3.0.1",
+    "gsap": "^3.6.0",
     "if-env": "^1.0.4",
     "ingredientparser": "0.0.3",
     "jsonwebtoken": "^8.5.1",
