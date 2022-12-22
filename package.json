@@ -31,7 +31,7 @@
     "gsap": "^3.0.1",
     "if-env": "^1.0.4",
     "ingredientparser": "0.0.3",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.13",
     "mongoose": "^5.7.7",
     "paginate-array": "^2.1.0",
